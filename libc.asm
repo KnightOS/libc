@@ -54,9 +54,9 @@ _draw_string:
     pop de ; y, x
     pop hl ; string
         ; Reverse DE so that it's x,y instead of y, x
-		ld a, d
-		ld d, e
-		ld e, a
+        ld a, d
+        ld d, e
+        ld e, a
         pcall(drawStr)
     push hl
     push de
