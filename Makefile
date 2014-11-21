@@ -2,11 +2,14 @@ include .knightos/variables.make
 
 AS=scas
 
-ALL_TARGETS:=$(LIB)c $(INC)display.h $(INC)system.h
+OBJECTS=$(patsubst src/%.c,$(OUT)%.o,$(wildcard src/*.c))
+HEADERS=$(patsubst include/%.h,$(INC)%.h,$(wildcard include/*.h))
 
-$(LIB)c: $(OUT)display.o $(OUT)system.o
+ALL_TARGETS:=$(LIB)c $(HEADERS)
+
+$(LIB)c: $(OBJECTS)
 	mkdir -p $(LIB)
-	scas -l -m $(OUT)display.o -o $(LIB)c
+	scas -l -m $(OBJECTS) -o $(LIB)c
 
 $(INC)%.h: include/%.h
 	mkdir -p $(INC)
@@ -19,7 +22,7 @@ $(OUT)%.o: $(OUT)%.asm
 	mkdir -p $(OUT)
 	$(AS) -I"$(INCLUDE)" -O -o $@ $<
 
-$(OUT)%.asm: %.c $(HEADERS)
+$(OUT)%.asm: src/%.c $(HEADERS)
 	mkdir -p $(OUT)
 	$(CC) -I.knightos/include/ -I./ -I./include/ -S --std-c99 $< -o $@
 
