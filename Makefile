@@ -2,9 +2,9 @@ include .knightos/variables.make
 
 AS=scas
 
-ALL_TARGETS:=$(LIB)c $(INC)display.h
+ALL_TARGETS:=$(LIB)c $(INC)display.h $(INC)system.h
 
-$(LIB)c: $(OUT)display.o
+$(LIB)c: $(OUT)display.o $(OUT)system.o
 	mkdir -p $(LIB)
 	scas -l -m $(OUT)display.o -o $(LIB)c
 
