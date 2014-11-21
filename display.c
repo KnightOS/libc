@@ -3,7 +3,7 @@
 
 unsigned char left_margin = 0;
 
-inline void get_lcd_lock() __naked {
+void get_lcd_lock() __naked {
 	__asm
 	PCALL(GETLCDLOCK)
 	__endasm;
