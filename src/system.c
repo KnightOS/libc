@@ -19,7 +19,7 @@ void *realloc(void *ptr) __naked {
 	__asm
 	POP DE
 	POP IX
-		PCALL(MALLOC)
+		PCALL(REALLOC)
 		PUSH IX
 		POP HL
 	PUSH IX
@@ -40,9 +40,10 @@ void free(void *ptr) {
 	ptr;
 }
 
-void *calloc(unsigned short nmemb, unsigned short size) {
-	return malloc(nmemb * size);
-}
+// TODO: Implement some of the sdcc runtime libraries in kcc
+//void *calloc(unsigned short nmemb, unsigned short size) {
+//	return malloc(nmemb * size);
+//}
 
 void load_library(const char *path) {
 	__asm
