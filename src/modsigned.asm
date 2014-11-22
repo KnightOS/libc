@@ -42,6 +42,8 @@ __modschar:
         call    __div8
 
         jp	__get_remainder
+__modschar_end:
+.function __modschar, __modschar, __modschar_end
 
 __modsint:
         pop     af
@@ -54,4 +56,5 @@ __modsint:
         call    __div16
 
         jp	__get_remainder
-
+__modsint_end:
+.function __modsint, __modsint, __modsint_end

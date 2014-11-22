@@ -44,6 +44,8 @@ __moduchar:
 	ex	de,hl
 
         ret
+__moduchar_end:
+.function __moduchar, __moduchar, __moduchar_end
 
 __moduint:
         pop     af
@@ -58,4 +60,5 @@ __moduint:
         ex      de,hl
 
         ret
-
+__moduint_end:
+.function __moduint, __moduint, __moduint_end

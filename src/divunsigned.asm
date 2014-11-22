@@ -42,6 +42,8 @@ __divuint:
         push    af
 
         jr      __divu16
+__divuint_end:
+.function __divuint, __divuint, __divuint_end
 
 __divuchar:
         ld      hl,#2+1
@@ -50,7 +52,9 @@ __divuchar:
         ld      e,(hl)
         dec     hl
         ld      l,(hl)
-
+        .ref __divu8
+__divuchar_end:
+.function __divuchar, __divuchar, __divuchar_end
         ;; Fall through
 __divu8::
         ld      h,#0x00
@@ -70,6 +74,9 @@ __divu8::
         ;;   If divisor is 0, quotient is set to "infinity", i.e HL = 0xFFFF.
         ;;
         ;; Register used: AF,B,DE,HL
+__divu8_end:
+.function __divu8, __divu8, __divu8_end
+        ;; Fall through
 __divu16::
         ;; Two algorithms: one assumes divisor <2^7, the second
         ;; assumes divisor >=2^7; choose the applicable one.
@@ -140,4 +147,6 @@ __divu16::
         ld      e,a             ; DE = quotient, HL = remainder
         ex      de,hl           ; HL = quotient, DE = remainder
         ret
+__divu16_end:
+.function __divu16, __divu16, __divu16_end
 

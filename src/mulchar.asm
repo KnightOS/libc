@@ -45,6 +45,8 @@ __mulsuchar:
         dec     hl
         ld      c,(hl)
         jr      signexte
+__mulsuchar_end:
+.function __mulsuchar, __mulsuchar, __mulsuchar_end
 
 __muluschar:
         ld      hl,#2
@@ -55,6 +57,8 @@ __muluschar:
         inc     hl
         ld      c,(hl)
         jr      signexte
+__muluschar_end:
+.function __muluschar, __muluschar, __muluschar_end
 
 ;; Originally from GBDK by Pascal Felber.
 
@@ -73,6 +77,10 @@ __mulschar:
         rla
         sbc     a,a
         ld      b,a
+        .ref signexte
+__mulschar_end:
+.function __mulschar, __mulschar, __mulschar_end
+        ;; Fall through
 signexte:
         ld      a,e
         rla
@@ -80,4 +88,5 @@ signexte:
         ld      d,a
 
         jp      __mul16
-
+signexte__end:
+.function signexte, signexte, signexte_end

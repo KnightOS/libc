@@ -41,6 +41,8 @@ __modsuchar:
 	call    __div_signexte
 
 	jp	__get_remainder
+__modsuchar_end:
+.function __modsuchar, __modsuchar, __modsuchar_end
 
 __moduschar:
 	ld      hl,#2+1
@@ -59,4 +61,6 @@ __moduschar:
 	call	__div16
 
 	jp	__get_remainder
+__moduschar_end:
+.function __moduschar, __moduschar, __moduschar_end
 

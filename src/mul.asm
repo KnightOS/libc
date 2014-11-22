@@ -55,6 +55,10 @@ __mulint:
 	;; hl = less significant word of product
 	;;
 	;; Register used: AF,BC,DE,HL
+        .ref __mul16
+__mulint_end:
+.function __mulint, __mulint, __mulint_end
+        ;; Fall through
 __mul16::
 	xor	a,a
 	ld	l,a
@@ -78,4 +82,5 @@ __mul16::
 3$:
         djnz    1$
         ret
-
+__mul16_end:
+.function __mul16, __mul16, __mul16_end

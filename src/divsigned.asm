@@ -40,6 +40,8 @@ __divsint:
         push    af
 
         jp      __div16
+__divsint_end:
+.function __divsint, __divsint, __divsint_end
 
 __divschar:
         ld      hl, #2+1
@@ -48,7 +50,10 @@ __divschar:
         ld      e, (hl)
         dec     hl
         ld      l, (hl)
-
+        .ref __div8
+__divschar_end:
+.function __divschar, __divschar, __divschar_end
+        ;; Fall through
 __div8::
         ld      a, l            ; Sign extend
         rlca
@@ -72,6 +77,10 @@ __div_signexte::
         ;;   DE = remainder
         ;;
         ;; Register used: AF,B,DE,HL
+        .ref __div16
+__div8_end::
+.function __div8, __div8, __div8_end
+        ;; Fall through
 __div16::
         ;; Determine sign of quotient by xor-ing high bytes of dividend
         ;;  and divisor. Quotient is positive if signs are the same, negative
@@ -121,6 +130,8 @@ __div16::
         ld      h, a
         ld      a, b
 	ret
+__div16_end:
+.function __div16, __div16, __div16_end
 
 __get_remainder::
         ; Negate remainder if it is negative and move it into hl
@@ -134,4 +145,5 @@ __get_remainder::
         sub     a, h
         ld      h, a
         ret
-
+__get_remainder_end:
+.function __get_remainder, __get_remainder, __get_remainder_end

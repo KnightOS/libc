@@ -43,19 +43,5 @@ _abs:
 	ret	P
 	ex	de, hl
 	ret
-
-; 14B; 59T for nonegative arguments, 94T for negative:
-;_abs:
-;	pop	de
-;	pop	hl
-;	push	hl
-;	push	de
-;	bit	7, h
-;	ret	Z
-;	xor	a, a
-;	ld	e, a
-;	ld	d, a
-;	ex	de, hl
-;	sbc	hl, de
-;	ret
-
+_abs_end:
+.function _abs, _abs, _abs_end

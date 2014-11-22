@@ -34,4 +34,5 @@
 
 __sdcc_call_hl:
 	jp	(hl)
-
+__sdcc_call_hl_end:
+.function __sdcc_call_hl, __sdcc_call_hl, __sdcc_call_hl_end

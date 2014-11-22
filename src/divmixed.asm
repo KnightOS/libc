@@ -39,6 +39,8 @@ __divsuchar:
 	ld	h, #0
 
 	jp	__div_signexte
+__divsuchar_end:
+.function __divsuchar, __divsuchar, __divsuchar_end
 
 __divuschar:
 	ld	hl, #2+1
@@ -55,4 +57,5 @@ __divuschar:
 	ld	h, a
 
 	jp	__div16
-
+__divuschar_end:
+.function __divuschar, __divuschar, __divuschar_end
