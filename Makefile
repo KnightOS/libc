@@ -3,6 +3,7 @@ include .knightos/variables.make
 AS=scas
 
 OBJECTS=$(patsubst src/%.c,$(OUT)%.o,$(wildcard src/*.c))
+OBJECTS+=$(patsubst src/%.asm,$(OUT)%.o,$(wildcard src/*.asm))
 HEADERS=$(patsubst include/%.h,$(INC)%.h,$(wildcard include/*.h))
 
 ALL_TARGETS:=$(LIB)c $(HEADERS)
@@ -17,6 +18,10 @@ $(INC)%.h: include/%.h
 
 #include .knightos/sdk.make
 .PHONY: all run clean help info package
+
+$(OUT)%.o: src/%.asm
+	mkdir -p $(OUT)
+	$(AS) -I"$(INCLUDE)" -O -o $@ $<
 
 $(OUT)%.o: $(OUT)%.asm
 	mkdir -p $(OUT)

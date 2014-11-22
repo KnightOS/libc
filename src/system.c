@@ -40,10 +40,9 @@ void free(void *ptr) {
 	ptr;
 }
 
-// TODO: Implement some of the sdcc runtime libraries in kcc
-//void *calloc(unsigned short nmemb, unsigned short size) {
-//	return malloc(nmemb * size);
-//}
+void *calloc(unsigned short nmemb, unsigned short size) {
+	return malloc(nmemb * size);
+}
 
 void load_library(const char *path) {
 	__asm
