@@ -3,7 +3,7 @@ include .knightos/variables.make
 AS=scas
 
 OBJECTS=$(patsubst src/%.c,$(OUT)%.o,$(wildcard src/*.c))
-OBJECTS=$(patsubst src/gpl/%.c,$(OUT)gpl/%.o,$(wildcard src/gpl/*.c))
+OBJECTS+=$(patsubst src/gpl/%.c,$(OUT)gpl/%.o,$(wildcard src/gpl/*.c))
 OBJECTS+=$(patsubst src/%.asm,$(OUT)%.o,$(wildcard src/*.asm))
 OBJECTS+=$(patsubst src/gpl/%.asm,$(OUT)gpl/%.o,$(wildcard src/gpl/*.asm))
 HEADERS=$(patsubst include/%.h,$(INC)%.h,$(wildcard include/*.h))
