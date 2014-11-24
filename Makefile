@@ -22,19 +22,27 @@ $(INC)%.h: include/%.h
 .PHONY: all run clean help info package
 
 $(OUT)%.o: src/%.asm
-	mkdir -p $(OUT)
+	mkdir -p $(OUT)gpl/
 	$(AS) -I"$(INCLUDE)" -O -o $@ $<
 
 $(OUT)gpl/%.o: src/gpl/%.asm
 	mkdir -p $(OUT)gpl/
 	$(AS) -I"$(INCLUDE)" -O -o $@ $<
 
+$(OUT)gpl/%.o: $(OUT)gpl/%.asm
+	mkdir -p $(OUT)gpl/
+	$(AS) -I"$(INCLUDE)" -O -o $@ $<
+
+$(OUT)%.o: $(OUT)gpl/%.asm
+	mkdir -p $(OUT)gpl/
+	$(AS) -I"$(INCLUDE)" -O -o $@ $<
+
 $(OUT)%.o: $(OUT)%.asm
-	mkdir -p $(OUT)
+	mkdir -p $(OUT)gpl/
 	$(AS) -I"$(INCLUDE)" -O -o $@ $<
 
 $(OUT)%.asm: src/%.c $(HEADERS)
-	mkdir -p $(OUT)
+	mkdir -p $(OUT)gpl/
 	$(CC) -I.knightos/include/ -I./ -I./include/ -S --std-c99 $< -o $@
 
 all: $(ALL_TARGETS)
