@@ -16,6 +16,17 @@ First, install the [KnightOS SDK](http://www.knightos.org/sdk).
 
 Use `make package` to get a package that you can install.
 
+## Licensing
+
+There are several codebases put together into this one. There is the KnightOS
+portion, which is licensed under the highly permissive MIT license, per the
+usual KnightOS fare. Additionally, standard C libraries and low level support
+(ala libgcc) is included here under the GPL license, and in some cases
+effectively public domain. The oddly licensed code is under src/gpl/ and each
+file details the licensing considerations within the file itself. Please note
+that the GPL-ed portions have a linking exception, which means that you are free
+to link with them without inheriting the GPL for your own programs.
+
 ## Help, Bugs, Feedback
 
 If you need help with KnightOS, want to keep up with progress, chat with
