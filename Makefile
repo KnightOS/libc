@@ -10,7 +10,7 @@ HEADERS=$(patsubst include/%.h,$(INC)%.h,$(wildcard include/*.h))
 
 ALL_TARGETS:=$(LIB)c $(HEADERS)
 
-$(LIB)c: $(OBJECTS)
+$(LIB)c: dependencies $(OBJECTS)
 	mkdir -p $(LIB)
 	scas -l -m $(OBJECTS) -o $(LIB)c
 
@@ -81,3 +81,5 @@ help:
 	@echo "Common targets:"
 	@echo "	all: 		Builds the entire project"
 	@echo "	run: 		Builds and runs the project in the emulator"
+
+include $(SDK)packages.make
