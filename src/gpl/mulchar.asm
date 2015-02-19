@@ -89,4 +89,4 @@ signexte:
 
         jp      __mul16
 signexte__end:
-.function signexte, signexte, signexte_end
+.function signexte, signexte, signexte__end

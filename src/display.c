@@ -40,7 +40,7 @@ void screen_draw(SCREEN *screen) {
 	screen;
 }
 
-inline void set_left_margin(unsigned char margin) {
+void set_left_margin(unsigned char margin) {
 	left_margin = margin;
 }
 
