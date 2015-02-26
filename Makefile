@@ -12,7 +12,7 @@ ALL_TARGETS:=$(LIB)c $(HEADERS)
 
 $(LIB)c: dependencies $(OBJECTS)
 	mkdir -p $(LIB)
-	scas -l -m $(OBJECTS) -o $(LIB)c
+	scas -c $(OBJECTS) -o $(LIB)c
 
 $(INC)%.h: include/%.h
 	mkdir -p $(INC)
@@ -23,23 +23,23 @@ $(INC)%.h: include/%.h
 
 $(OUT)%.o: src/%.asm
 	mkdir -p $(OUT)gpl/
-	$(AS) -I"$(INCLUDE)" -O -o $@ $<
+	$(AS) -c -I"$(INCLUDE)" -o $@ $<
 
 $(OUT)gpl/%.o: src/gpl/%.asm
 	mkdir -p $(OUT)gpl/
-	$(AS) -I"$(INCLUDE)" -O -o $@ $<
+	$(AS) -c -I"$(INCLUDE)" -o $@ $<
 
 $(OUT)gpl/%.o: $(OUT)gpl/%.asm
 	mkdir -p $(OUT)gpl/
-	$(AS) -I"$(INCLUDE)" -O -o $@ $<
+	$(AS) -c -I"$(INCLUDE)" -o $@ $<
 
 $(OUT)%.o: $(OUT)gpl/%.asm
 	mkdir -p $(OUT)gpl/
-	$(AS) -I"$(INCLUDE)" -O -o $@ $<
+	$(AS) -c -I"$(INCLUDE)" -o $@ $<
 
 $(OUT)%.o: $(OUT)%.asm
 	mkdir -p $(OUT)gpl/
-	$(AS) -I"$(INCLUDE)" -O -o $@ $<
+	$(AS) -c -I"$(INCLUDE)" -o $@ $<
 
 $(OUT)%.asm: src/%.c $(HEADERS)
 	mkdir -p $(OUT)gpl/
