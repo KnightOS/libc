@@ -46,12 +46,12 @@ void set_left_margin(unsigned char margin) {
 
 void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *string) {
 	__asm
-	POP IX
-	POP IY
-	POP DE
+	POP IX ; Return point
+	POP IY ; screen
+	POP DE ; x, y
 	ld hl, _left_margin
 	ld b, (hl)
-	POP HL
+	POP HL ; string
 		ld a, d
 		ld d, e
 		ld e, a
@@ -62,4 +62,42 @@ void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *s
 	PUSH IX
 	__endasm;
 	screen; x; y; string;
+}
+
+void draw_char(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value) {
+	__asm
+	POP IX
+	POP IY
+	POP DE
+		ld a, d
+		ld d, e
+		ld e, a
+	INC SP
+	POP AF
+		PCALL(DRAWDECA)
+	PUSH AF
+	DEC SP
+	PUSH DE
+	PUSH IY
+	PUSH IX
+	__endasm;
+	screen; x; y; value;
+}
+
+void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short value) {
+	__asm
+	POP IX
+	POP IY
+	POP DE
+	POP HL
+		ld a, d
+		ld d, e
+		ld e, a
+		PCALL(DRAWDECHL)
+	PUSH HL
+	PUSH DE
+	PUSH IY
+	PUSH IX
+	__endasm;
+	screen; x; y; value;
 }
