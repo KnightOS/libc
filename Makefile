@@ -8,10 +8,10 @@ OBJECTS+=$(patsubst src/%.asm,$(OUT)%.o,$(wildcard src/*.asm))
 OBJECTS+=$(patsubst src/gpl/%.asm,$(OUT)gpl/%.o,$(wildcard src/gpl/*.asm))
 HEADERS=$(patsubst include/%.h,$(INC)%.h,$(wildcard include/*.h))
 
-ALL_TARGETS:=$(LIB)c $(HEADERS)
+ALL_TARGETS:=$(SLIB)c $(HEADERS)
 
 $(SLIB)c: dependencies $(OBJECTS)
-	mkdir -p $(LIB)
+	mkdir -p $(SLIB)
 	scas -c $(OBJECTS) -o $(SLIB)c
 
 $(INC)%.h: include/%.h
