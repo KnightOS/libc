@@ -10,9 +10,9 @@ HEADERS=$(patsubst include/%.h,$(INC)%.h,$(wildcard include/*.h))
 
 ALL_TARGETS:=$(LIB)c $(HEADERS)
 
-$(LIB)c: dependencies $(OBJECTS)
+$(SLIB)c: dependencies $(OBJECTS)
 	mkdir -p $(LIB)
-	scas -c $(OBJECTS) -o $(LIB)c
+	scas -c $(OBJECTS) -o $(SLIB)c
 
 $(INC)%.h: include/%.h
 	mkdir -p $(INC)
