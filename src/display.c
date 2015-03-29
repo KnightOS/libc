@@ -3,12 +3,6 @@
 
 unsigned char left_margin = 0;
 
-void get_lcd_lock() __naked {
-	__asm
-	PCALL(GETLCDLOCK)
-	__endasm;
-}
-
 SCREEN *screen_allocate() __naked {
 	__asm
 	PCALL(ALLOCSCREENBUFFER)

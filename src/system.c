@@ -1,6 +1,20 @@
 #include <system.h>
 #include <kernel.h>
 
+void get_lcd_lock() __naked {
+	__asm
+	PCALL(GETLCDLOCK)
+	RET
+	__endasm;
+}
+
+void get_keypad_lock() __naked {
+	__asm
+	PCALL(GETKEYPADLOCK)
+	RET
+	__endasm;
+}
+
 void *malloc(unsigned short size) __naked {
 	__asm
 	POP DE

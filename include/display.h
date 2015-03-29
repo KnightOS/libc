@@ -3,7 +3,6 @@
 
 typedef unsigned char SCREEN;
 
-void get_lcd_lock();
 SCREEN *screen_allocate();
 void screen_clear(SCREEN *screen);
 void screen_draw(SCREEN *screen);
