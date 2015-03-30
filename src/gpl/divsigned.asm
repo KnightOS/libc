@@ -31,6 +31,7 @@
 .globl	__divsint
 .globl	__divschar
 .globl __get_remainder
+.globl __div16
 
 __divsint:
         pop     af
