@@ -32,6 +32,8 @@
 
 .globl	__divuint
 .globl	__divuchar
+.globl  __divu8
+.globl  __divu16
 
 __divuint:
         pop     af

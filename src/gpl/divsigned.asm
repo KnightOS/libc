@@ -30,6 +30,7 @@
 
 .globl	__divsint
 .globl	__divschar
+.globl __get_remainder
 
 __divsint:
         pop     af
