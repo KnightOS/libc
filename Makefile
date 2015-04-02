@@ -7,6 +7,7 @@ OBJECTS+=$(patsubst src/gpl/%.c,$(OUT)gpl/%.o,$(wildcard src/gpl/*.c))
 OBJECTS+=$(patsubst src/%.asm,$(OUT)%.o,$(wildcard src/*.asm))
 OBJECTS+=$(patsubst src/gpl/%.asm,$(OUT)gpl/%.o,$(wildcard src/gpl/*.asm))
 HEADERS=$(patsubst include/%.h,$(INC)%.h,$(wildcard include/*.h))
+HEADERS=$(patsubst include/sys/%.h,$(INC)sys/%.h,$(wildcard include/sys/*.h))
 
 ALL_TARGETS:=$(SLIB)c $(HEADERS)
 
@@ -16,6 +17,7 @@ $(SLIB)c: dependencies $(OBJECTS)
 
 $(INC)%.h: include/%.h
 	mkdir -p $(INC)
+	mkdir -p $(INC)sys/
 	cp $< $@
 
 #include .knightos/sdk.make
