@@ -13,9 +13,9 @@ OBJECTS+=$(patsubst src/tios/%.asm,$(OUT)tios/%.o,$(wildcard src/tios/*.asm))
 OBJECTS+=$(patsubst src/gpl/%.asm,$(OUT)gpl/%.o,$(wildcard src/gpl/*.asm))
 
 HEADERS=$(patsubst include/%.h,$(INC)%.h,$(wildcard include/*.h))
-HEADERS=$(patsubst include/knightos/%.h,$(INC)%.h,$(wildcard include/knightos/*.h))
-HEADERS=$(patsubst include/tios/%.h,$(INC)%.h,$(wildcard include/tios/*.h))
-HEADERS=$(patsubst include/sys/%.h,$(INC)sys/%.h,$(wildcard include/sys/*.h))
+HEADERS+=$(patsubst include/knightos/%.h,$(INC)knightos/%.h,$(wildcard include/knightos/*.h))
+HEADERS+=$(patsubst include/tios/%.h,$(INC)tios/%.h,$(wildcard include/tios/*.h))
+HEADERS+=$(patsubst include/sys/%.h,$(INC)sys/%.h,$(wildcard include/sys/*.h))
 
 ALL_TARGETS:=$(SLIB)c $(HEADERS)
 
@@ -25,8 +25,18 @@ $(SLIB)c: dependencies $(OBJECTS)
 
 $(INC)%.h: include/%.h
 	mkdir -p $(INC)
+	cp $< $@
+
+$(INC)sys/%.h: include/sys/%.h
 	mkdir -p $(INC)sys/
+	cp $< $@
+
+$(INC)knightos/%.h: include/knightos/%.h
 	mkdir -p $(INC)knightos/
+	cp $< $@
+
+$(INC)tios/%.h: include/tios/%.h
+	mkdir -p $(INC)tios/
 	cp $< $@
 
 #include .knightos/sdk.make
