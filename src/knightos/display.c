@@ -1,4 +1,4 @@
-#include <display.h>
+#include <knightos/display.h>
 #include <kernel.h>
 
 unsigned char left_margin = 0;

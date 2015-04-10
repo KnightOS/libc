@@ -1,4 +1,4 @@
-#include <system.h>
+#include <knightos/system.h>
 #include <kernel.h>
 
 void get_lcd_lock() __naked {
