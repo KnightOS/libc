@@ -20,7 +20,7 @@ void puts(const char *s) {
 	__asm
 	POP BC
 	POP HL
-		BCALL(PUTS);
+		BCALL(BCALL_PUTS);
 	PUSH HL
 	PUSH BC
 	RET
