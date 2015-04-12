@@ -16,7 +16,7 @@ void clr_lcd_full() __naked {
 	__endasm;
 }
 
-void puts(const char *s) {
+void puts(const char *s) __naked {
 	__asm
 	POP BC
 	POP HL
