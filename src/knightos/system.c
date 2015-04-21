@@ -1,5 +1,6 @@
 #include <knightos/system.h>
 #include <kernel.h>
+#include <stddef.h>
 
 void get_lcd_lock() __naked {
 	__asm
@@ -15,7 +16,7 @@ void get_keypad_lock() __naked {
 	__endasm;
 }
 
-void *malloc(unsigned short size) __naked {
+void *malloc(size_t size) __naked {
 	__asm
 	POP DE
 	POP BC
@@ -29,18 +30,20 @@ void *malloc(unsigned short size) __naked {
 	size;
 }
 
-void *realloc(void *ptr) __naked {
+void *realloc(void *ptr, size_t size) __naked {
 	__asm
 	POP DE
+	POP BC
 	POP IX
 		PCALL(REALLOC)
 		PUSH IX
 		POP HL
 	PUSH IX
+	PUSH BC
 	PUSH DE
 	RET
 	__endasm;
-	ptr;
+	ptr; size;
 }
 
 void free(void *ptr) {
@@ -54,7 +57,7 @@ void free(void *ptr) {
 	ptr;
 }
 
-void *calloc(unsigned short nmemb, unsigned short size) {
+void *calloc(size_t nmemb, size_t size) {
 	return malloc(nmemb * size);
 }
 
