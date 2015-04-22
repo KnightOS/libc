@@ -3,11 +3,7 @@
 
 unsigned char get_key() __naked {
 	__asm
-	POP IX
-	POP HL
-		PCALL(GETKEY)
-	PUSH HL
-	PUSH IX
+	PCALL(GETKEY)
 	LD L, A
 	RET
 	__endasm;
@@ -15,11 +11,7 @@ unsigned char get_key() __naked {
 
 unsigned char wait_key() __naked {
 	__asm
-	POP IX
-	POP HL
-		PCALL(GETKEY)
-	PUSH HL
-	PUSH IX
+	PCALL(WAITKEY)
 	LD L, A
 	RET
 	__endasm;
