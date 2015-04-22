@@ -1,6 +1,9 @@
 #ifndef __DISPLAY_H
 #define __DISPLAY_H
 
+#define DISPLAY_WIDTH 96
+#define DISPLAY_HEIGHT 64
+
 typedef unsigned char SCREEN;
 
 SCREEN *screen_allocate();
