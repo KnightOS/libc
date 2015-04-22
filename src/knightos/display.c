@@ -58,6 +58,28 @@ void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *s
 	screen; x; y; string;
 }
 
+void draw_sprite(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite) {
+	__asm
+	POP IX ; Return point
+	POP IY ; screen
+	POP DE ; x, y
+	DEC SP
+	POP BC ; height
+	POP HL ; sprite
+		ld a, d
+		ld d, e
+		ld e, a
+		PCALL(PUTSPRITEOR)
+	PUSH HL
+	PUSH BC
+	INC SP
+	PUSH DE
+	PUSH IY
+	PUSH IX
+	__endasm;
+	screen; x; y; height; sprite;
+}
+
 void draw_char(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value) {
 	__asm
 	POP IX
@@ -66,11 +88,11 @@ void draw_char(SCREEN *screen, unsigned char x, unsigned char y, unsigned char v
 		ld a, d
 		ld d, e
 		ld e, a
-	INC SP
+	DEC SP
 	POP AF
 		PCALL(DRAWDECA)
 	PUSH AF
-	DEC SP
+	INC SP
 	PUSH DE
 	PUSH IY
 	PUSH IX
