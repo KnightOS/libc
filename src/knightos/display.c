@@ -12,24 +12,26 @@ SCREEN *screen_allocate() __naked {
 	__endasm;
 }
 
-void screen_clear(SCREEN *screen) {
+void screen_clear(SCREEN *screen) __naked {
 	__asm
-	POP IX
+	POP HL
 	POP IY
 	PCALL(CLEARBUFFER)
 	PUSH IY
-	PUSH IX
+	PUSH HL
+	RET
 	__endasm;
 	screen;
 }
 
-void screen_draw(SCREEN *screen) {
+void screen_draw(SCREEN *screen) __naked {
 	__asm
-	POP IX
+	POP HL
 	POP IY
 	PCALL(FASTCOPY)
 	PUSH IY
-	PUSH IX
+	PUSH HL
+	RET
 	__endasm;
 	screen;
 }
@@ -38,9 +40,12 @@ void set_left_margin(unsigned char margin) {
 	left_margin = margin;
 }
 
-void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *string) {
+void *draw_string_return_point;
+
+void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *string) __naked {
 	__asm
-	POP IX ; Return point
+	POP HL ; Return point
+	ld (_draw_string_return_point), hl
 	POP IY ; screen
 	POP DE ; x, y
 	ld hl, _left_margin
@@ -53,14 +58,17 @@ void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *s
 	PUSH HL
 	PUSH DE
 	PUSH IY
-	PUSH IX
+	ld hl, (_draw_string_return_point)
+	PUSH HL
+	RET
 	__endasm;
 	screen; x; y; string;
 }
 
 void draw_sprite(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite) {
 	__asm
-	POP IX ; Return point
+	POP HL ; Return point
+	ld (_draw_string_return_point), hl
 	POP IY ; screen
 	POP DE ; x, y
 	DEC SP
@@ -75,14 +83,15 @@ void draw_sprite(SCREEN *screen, unsigned char x, unsigned char y, unsigned char
 	INC SP
 	PUSH DE
 	PUSH IY
-	PUSH IX
+	ld hl, (_draw_string_return_point)
+	PUSH HL
 	__endasm;
 	screen; x; y; height; sprite;
 }
 
 void draw_char(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value) {
 	__asm
-	POP IX
+	POP BC
 	POP IY
 	POP DE
 		ld a, d
@@ -95,14 +104,14 @@ void draw_char(SCREEN *screen, unsigned char x, unsigned char y, unsigned char v
 	INC SP
 	PUSH DE
 	PUSH IY
-	PUSH IX
+	PUSH BC
 	__endasm;
 	screen; x; y; value;
 }
 
 void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short value) {
 	__asm
-	POP IX
+	POP BC
 	POP IY
 	POP DE
 	POP HL
@@ -113,7 +122,7 @@ void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short
 	PUSH HL
 	PUSH DE
 	PUSH IY
-	PUSH IX
+	PUSH BC
 	__endasm;
 	screen; x; y; value;
 }
