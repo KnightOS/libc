@@ -5,6 +5,7 @@
 
 void get_lcd_lock();
 void get_keypad_lock();
+void ksleep(unsigned short msecs);
 void *malloc(size_t size);
 void *realloc(void *ptr, size_t size);
 void *calloc(unsigned short nmemb, unsigned short size);

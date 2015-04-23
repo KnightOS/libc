@@ -16,6 +16,18 @@ void get_keypad_lock() __naked {
 	__endasm;
 }
 
+void ksleep(unsigned short msecs) __naked {
+	__asm
+	POP DE
+	POP HL
+		PCALL(SLEEP)
+	PUSH HL
+	PUSH DE
+	RET
+	__endasm;
+	msecs;
+}
+
 void *malloc(size_t size) __naked {
 	__asm
 	POP DE
