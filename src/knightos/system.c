@@ -83,3 +83,11 @@ void load_library(const char *path) {
 	__endasm;
 	path;
 }
+
+unsigned char get_random() __naked {
+	__asm
+	PCALL(GETRANDOM)
+	LD L, A
+	ret
+	__endasm;
+}
