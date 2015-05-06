@@ -3,5 +3,7 @@
 
 // TODO: The rest of this header
 int tolower(int);
+int isspace(int);
+int isdigit(int c);
 
 #endif
