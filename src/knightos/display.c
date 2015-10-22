@@ -40,12 +40,12 @@ void set_left_margin(unsigned char margin) {
 	left_margin = margin;
 }
 
-void *draw_string_return_point;
+void *saved_return_point;
 
 void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *string) __naked {
 	__asm
 	POP HL ; Return point
-	ld (_draw_string_return_point), hl
+	ld (_saved_return_point), hl
 	POP IY ; screen
 	POP DE ; x, y
 	ld hl, _left_margin
@@ -58,17 +58,43 @@ void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *s
 	PUSH HL
 	PUSH DE
 	PUSH IY
-	ld hl, (_draw_string_return_point)
+	ld hl, (_saved_return_point)
 	PUSH HL
 	RET
 	__endasm;
 	screen; x; y; string;
 }
 
+void draw_line(SCREEN *screen, unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2) __naked{
+	__asm
+	POP HL ; Return point
+	ld (_saved_return_point), hl
+	POP IY ; screen
+	POP DE ; x1, y1
+	POP HL ; x2, y2
+		ld a, d ; swap de
+		ld d, e
+		ld e, a
+
+		ld a, h ; swap hl
+		ld h, l
+		ld l, a
+		PCALL(DRAWLINE)
+	PUSH HL
+	PUSH DE
+	PUSH IY
+	ld hl, (_saved_return_point)
+	PUSH HL
+	RET
+	__endasm;
+	screen; x1; y1; x2; y2;
+}
+
+
 void draw_sprite(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite) {
 	__asm
 	POP HL ; Return point
-	ld (_draw_string_return_point), hl
+	ld (_saved_return_point), hl
 	POP IY ; screen
 	POP DE ; x, y
 	DEC SP
@@ -83,7 +109,7 @@ void draw_sprite(SCREEN *screen, unsigned char x, unsigned char y, unsigned char
 	INC SP
 	PUSH DE
 	PUSH IY
-	ld hl, (_draw_string_return_point)
+	ld hl, (_saved_return_point)
 	PUSH HL
 	__endasm;
 	screen; x; y; height; sprite;
