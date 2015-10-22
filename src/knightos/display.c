@@ -65,6 +65,10 @@ void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *s
 	screen; x; y; string;
 }
 
+void draw_v_line(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height)  {
+	draw_line(screen, x, y, x, y + height);
+}
+
 void draw_line(SCREEN *screen, unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2) __naked{
 	__asm
 	POP HL ; Return point
@@ -89,6 +93,7 @@ void draw_line(SCREEN *screen, unsigned char x1, unsigned char y1, unsigned char
 	__endasm;
 	screen; x1; y1; x2; y2;
 }
+
 
 void draw_sprite(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite, GFX_BLEND_MODE blend_mode) {
     switch (blend_mode) {
