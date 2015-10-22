@@ -95,15 +95,15 @@ void draw_v_line(SCREEN *screen, unsigned char x, unsigned char y, unsigned char
 }
 
 void draw_sprite(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite, GFX_BLEND_MODE blend_mode) {
-    switch (blend_mode) {
-    case GFX_AND:
-        draw_sprite_and(screen, x, y, height, sprite);
-        break;
-   	case GFX_OR:
-    	draw_sprite_or(screen, x, y, height, sprite);
+	switch (blend_mode) {
+	case GFX_AND:
+		draw_sprite_and(screen, x, y, height, sprite);
     	break;
-    case GFX_XOR:
-    	draw_sprite_xor(screen, x, y, height, sprite);
+	case GFX_OR:
+		draw_sprite_or(screen, x, y, height, sprite);
+    	break;
+ 	case GFX_XOR:
+		draw_sprite_xor(screen, x, y, height, sprite);
     	break;
     }
 }
@@ -208,7 +208,7 @@ void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, uns
 	screen; width; height; x; y;
 }
 
-void draw_char(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value) {
+void draw_int(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value) {
 	__asm
 	POP BC
 	POP IY
@@ -245,7 +245,7 @@ void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short
 	__endasm;
 	screen; x; y; value;
 }
-/** TODO: make this work **/
+
 void set_pixel(SCREEN *screen, unsigned char x, unsigned char y) __naked {
 	__asm
 	POP HL ; Return point
