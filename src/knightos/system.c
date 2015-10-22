@@ -98,4 +98,3 @@ unsigned char get_random() __naked {
 	ret
 	__endasm;
 }
-Outputs
