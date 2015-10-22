@@ -16,6 +16,13 @@ void get_keypad_lock() __naked {
 	__endasm;
 }
 
+void get_io_lock() __naked {
+	__asm
+	PCALL(GETIOLOCK)
+	RET
+	__endasm;
+}
+
 void ksleep(unsigned short msecs) __naked {
 	__asm
 	POP DE
@@ -91,3 +98,4 @@ unsigned char get_random() __naked {
 	ret
 	__endasm;
 }
+Outputs

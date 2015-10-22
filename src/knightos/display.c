@@ -65,10 +65,6 @@ void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *s
 	screen; x; y; string;
 }
 
-void draw_v_line(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height)  {
-	draw_line(screen, x, y, x, y + height);
-}
-
 void draw_line(SCREEN *screen, unsigned char x1, unsigned char y1, unsigned char x2, unsigned char y2) __naked{
 	__asm
 	POP HL ; Return point
@@ -94,6 +90,9 @@ void draw_line(SCREEN *screen, unsigned char x1, unsigned char y1, unsigned char
 	screen; x1; y1; x2; y2;
 }
 
+void draw_v_line(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height)  {
+	draw_line(screen, x, y, x, y + height);
+}
 
 void draw_sprite(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite, GFX_BLEND_MODE blend_mode) {
     switch (blend_mode) {
@@ -181,6 +180,34 @@ void draw_sprite_xor(SCREEN *screen, unsigned char x, unsigned char y, unsigned 
 	screen; x; y; height; sprite;
 }
 
+/* this doesn't work */
+void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y) __naked {
+	__asm
+	POP HL ; Return point
+	ld (_saved_return_point), hl
+	POP IY ; screen
+	DEC SP
+	POP BC ; width, height
+	POP DE ; x, y
+		ld a, b
+		ld b, c
+		ld c, a
+
+		ld a, d
+		ld l, e
+		ld e, a
+
+		PCALL(RECTOR)
+	PUSH DE
+	INC SP
+	PUSH BC
+	PUSH IY
+	ld hl, (_saved_return_point)
+	PUSH HL
+	__endasm;
+	screen; width; height; x; y;
+}
+
 void draw_char(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value) {
 	__asm
 	POP BC
@@ -217,4 +244,19 @@ void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short
 	PUSH BC
 	__endasm;
 	screen; x; y; value;
+}
+/** TODO: make this work **/
+void set_pixel(SCREEN *screen, unsigned char x, unsigned char y) __naked {
+	__asm
+	POP HL ; Return point
+	ld (_saved_return_point), hl
+	PUSH IY ; screen
+	PUSH HL ; xy
+		ld a, h
+		PCALL(SETPIXEL)
+	POP HL
+	POP IY ; screen
+	ld hl, (_saved_return_point)
+	PUSH HL
+	__endasm;
 }
