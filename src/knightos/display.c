@@ -42,14 +42,35 @@ void set_left_margin(unsigned char margin) {
 
 void *saved_return_point;
 
+void draw_char(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value) __naked {
+	__asm
+	POP HL ; Return point
+	ld (_saved_return_point), hl
+	POP IY ; screen
+	POP DE ; x, y
+		ld a, d
+		ld d, e
+		ld e, a
+	DEC SP
+	POP AF ; value
+		PCALL(DRAWCHAR)
+	PUSH AF
+	INC SP
+	PUSH DE
+	PUSH IY
+	ld hl, (_saved_return_point)
+	PUSH HL
+	RET
+	__endasm;
+	screen; x; y; value;
+}
+
 void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *string) __naked {
 	__asm
 	POP HL ; Return point
 	ld (_saved_return_point), hl
 	POP IY ; screen
 	POP DE ; x, y
-	ld hl, _left_margin
-	ld b, (hl)
 	POP HL ; string
 		ld a, d
 		ld d, e
@@ -186,7 +207,6 @@ void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, uns
 	POP HL ; Return point
 	ld (_saved_return_point), hl
 	POP IY ; screen
-	DEC SP
 	POP BC ; width, height
 	POP DE ; x, y
 		ld a, b
@@ -244,19 +264,4 @@ void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short
 	PUSH BC
 	__endasm;
 	screen; x; y; value;
-}
-
-void set_pixel(SCREEN *screen, unsigned char x, unsigned char y) __naked {
-	__asm
-	POP HL ; Return point
-	ld (_saved_return_point), hl
-	PUSH IY ; screen
-	PUSH HL ; xy
-		ld a, h
-		PCALL(SETPIXEL)
-	POP HL
-	POP IY ; screen
-	ld hl, (_saved_return_point)
-	PUSH HL
-	__endasm;
 }
