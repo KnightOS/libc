@@ -71,6 +71,8 @@ void draw_string(SCREEN *screen, unsigned char x, unsigned char y, const char *s
 	ld (_saved_return_point), hl
 	POP IY ; screen
 	POP DE ; x, y
+	ld hl, _left_margin
+	ld b, (hl)
 	POP HL ; string
 		ld a, d
 		ld d, e
