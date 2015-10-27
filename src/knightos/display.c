@@ -268,20 +268,10 @@ void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short
 	screen; x; y; value;
 }
 
-void draw_long(SCREEN *screen, unsigned char x, unsigned char y, unsigned short value) {
-	__asm
-	POP BC
-	POP IY
-	POP DE
-	POP HL
-		ld a, d
-		ld d, e
-		ld e, a
-		PCALL(DRAWDECHL)
-	PUSH HL
-	PUSH DE
-	PUSH IY
-	PUSH BC
+/** TODO: make this work, ACIX **/
+void draw_long(SCREEN *screen, unsigned char x, unsigned char y, unsigned long value) {
+	__asm 
+		PCALL(DRAWDECACIX)
 	__endasm;
 	screen; x; y; value;
 }

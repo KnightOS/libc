@@ -93,11 +93,10 @@ clean:
 
 package: all
 	kpack libc-$(VERSION).pkg $(ROOT)
-	@mv libc-$(VERSION).pkg pong/.knightos/packages
+
 
 install: package
-	kpack -e -s libc-$(VERSION).pkg $(PREFIX)pong/.knightos/packages
-	
+	kpack -e -s libc-$(VERSION).pkg $(PREFIX)	
 help:
 	@echo "KnightOS Makefile for libc"
 	@echo "Usage: make [target]"

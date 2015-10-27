@@ -23,9 +23,9 @@ void draw_sprite_and(SCREEN *screen, unsigned char x, unsigned char y, unsigned 
 void draw_sprite_or(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite);
 void draw_sprite_xor(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite);
 void draw_rect_and(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y);
-void draw_byte(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value);
-void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short value);
 void draw_char(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value);
+void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short value);
+void draw_byte(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value);
 void draw_long(SCREEN *screen, unsigned char x, unsigned char y, unsigned long value);
 
 void set_left_margin(unsigned char margin);
