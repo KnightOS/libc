@@ -5,8 +5,7 @@ const unsigned int __trig_factlist[] = {
     1, 2, 6, 24, 120, 720, 5040, 40320
 };
 
-#define __TWOPI 6.283185307
-#define __HALFPI  1.570796327
+#define __TWOPI 2*M_PI
 
 double sin(double x) {
     double out = 0;
@@ -24,11 +23,11 @@ double sin(double x) {
 }
 
 double cos(double x) {
-    return sin(x - __HALFPI);
+    return sin(x - M_PI_2);
 }
 
 double tan(double x) {
-    return sin(x) / sin(x - __HALFPI);
+    return sin(x) / sin(x - M_PI_2);
 }
 
 /* Unimplemented
