@@ -230,7 +230,7 @@ void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, uns
 	screen; width; height; x; y;
 }
 
-void draw_int(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value) {
+void draw_byte(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value) {
 	__asm
 	POP BC
 	POP IY
@@ -251,6 +251,24 @@ void draw_int(SCREEN *screen, unsigned char x, unsigned char y, unsigned char va
 }
 
 void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short value) {
+	__asm
+	POP BC
+	POP IY
+	POP DE
+	POP HL
+		ld a, d
+		ld d, e
+		ld e, a
+		PCALL(DRAWDECHL)
+	PUSH HL
+	PUSH DE
+	PUSH IY
+	PUSH BC
+	__endasm;
+	screen; x; y; value;
+}
+
+void draw_long(SCREEN *screen, unsigned char x, unsigned char y, unsigned short value) {
 	__asm
 	POP BC
 	POP IY
