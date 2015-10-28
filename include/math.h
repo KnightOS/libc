@@ -8,6 +8,7 @@
 #define M_LOG10E         0.434294481    /* log_10 e */
 #define M_LN2            0.693147180    /* log_e 2 */
 #define M_LN10           2.302585092    /* log_e 10 */
+#define M_2PI            6.283185307    /* 2*pi */
 #define M_PI             3.141592653	/* pi */
 #define M_PI_2           1.570796326	/* pi/2 */
 #define M_PI_4           0.785398163	/* pi/4 */
