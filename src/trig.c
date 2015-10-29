@@ -1,35 +1,76 @@
 #include <math.h>
 
-//Just a list of factorials, precalculated to save time.
+// A list of factorials, precalculated to save time.
 const unsigned int __trig_factlist[] = {
-    1, 2, 6, 24, 120, 720, 5040, 40320
+    1, 1, 2, 6, 24, 120, 720, 5040, 40320
 };
 
-#define __TWOPI 6.283185307
-#define __HALFPI  1.570796327
-
 double sin(double x) {
-    double out = 0;
-    int iter;
+	double x_pow = x;
+	double out = 0;
+	int sign = 1;
+	int i;
 
-    x = fmod(x,__TWOPI);
+	x = fmod(x, M_2PI);
+	// calculate reference angle, get sign
+	if (x > 3 * M_PI / 2) {
+		x = M_2PI - x;
+		sign = -1;
+	} else if (x > M_PI) {
+		x = x - M_PI;
+		sign = -1;
+	} else if (x > M_PI_2) {
+		x = M_PI - x;
+	}
+	// if x > 45, use cos(90-x)
+	if (x > M_PI_4) {
+		return sign * cos(M_PI_2 - x);
+	}
+	// calculate sin x using taylor series
+	for (i = 1; i < 8; i += 4) {
+		out += x_pow / __trig_factlist[i];
+		x_pow *= x * x;
+		out -= x_pow / __trig_factlist[i + 2];
+		x_pow *= x * x;
+	}
 
-    for (iter = 0; iter < 4; iter += 2) {
-        out += x / __trig_factlist[iter];
-        x = x * x * x;
-        out -= x / __trig_factlist[iter+1];
-        x = x * x * x;
-    }
-    return out;
+	return sign * out;
 }
 
 double cos(double x) {
-    return sin(x - __HALFPI);
+	double x_pow = 1;
+	double out = 0;
+	int sign = 1;
+	int i;
+
+	// similar algorithm as sin(x)
+	x = fmod(x, M_2PI);
+	if (x > 3 * M_PI / 2) {
+		x = M_2PI - x;
+	} else if (x > M_PI) {
+		x = x - M_PI;
+		sign = -1;
+	} else if (x > M_PI_2) {
+		x = M_PI - x;
+		sign = -1;
+	}
+	if (x > M_PI_4) {
+		return sign * sin(M_PI_2 - x);
+	}
+	for (i = 0; i < 8; i += 4) {
+		out += x_pow / __trig_factlist[i];
+		x_pow *= x * x;
+		out -= x_pow / __trig_factlist[i + 2];
+		x_pow *= x * x;
+	}
+
+	return sign * out;
 }
 
 double tan(double x) {
-    return sin(x) / sin(x - __HALFPI);
+    return sin(x) / cos(x);
 }
+
 
 /* Unimplemented
 double asin(double x) {
