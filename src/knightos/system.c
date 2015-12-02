@@ -98,3 +98,19 @@ unsigned char get_random() __naked {
 	ret
 	__endasm;
 }
+
+void reboot() __naked {
+	__asm
+	POP IX
+	PCALL(REBOOT)
+	PUSH IX
+	__endasm;
+}
+
+void suspend_device() __naked {
+	__asm
+	POP IX
+	PCALL(SUSPENDDEVICE)
+	PUSH IX
+	__endasm;
+}
