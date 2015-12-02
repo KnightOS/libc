@@ -16,6 +16,7 @@ HEADERS=$(patsubst include/%.h,$(INC)%.h,$(wildcard include/*.h))
 HEADERS+=$(patsubst include/knightos/%.h,$(INC)knightos/%.h,$(wildcard include/knightos/*.h))
 HEADERS+=$(patsubst include/tios/%.h,$(INC)tios/%.h,$(wildcard include/tios/*.h))
 HEADERS+=$(patsubst include/sys/%.h,$(INC)sys/%.h,$(wildcard include/sys/*.h))
+HEADERS+=$(patsubst include/experimental/%.h,$(INC)experimental/%.h,$(wildcard include/experimental/*.h))
 
 ALL_TARGETS:=$(SLIB)c $(HEADERS)
 
@@ -29,6 +30,10 @@ $(INC)%.h: include/%.h
 
 $(INC)sys/%.h: include/sys/%.h
 	mkdir -p $(INC)sys/
+	cp $< $@
+
+$(INC)experimental/%.h: include/experimental/%.h
+	mkdir -p $(INC)experimental/
 	cp $< $@
 
 $(INC)knightos/%.h: include/knightos/%.h
