@@ -37,13 +37,24 @@ void ksleep(unsigned short msecs) __naked {
 
 void *malloc(size_t size) __naked {
 	__asm
-	POP DE
-	POP BC
-		PCALL(MALLOC)
-		PUSH IX
-		POP HL
-	PUSH BC
-	PUSH DE
+	PUSH IX
+	LD IX, 0
+	ADD IX, SP
+
+	LD B, (IX + 5)
+	LD C, (IX + 4)
+
+	PCALL(MALLOC)
+	PUSH IX \ POP HL
+
+	JR Z, __malloc_done
+
+	LD HL, 0 ; NULL
+	POP IX
+	RET
+
+__malloc_done:
+	POP IX
 	RET
 	__endasm;
 	size;
@@ -51,15 +62,29 @@ void *malloc(size_t size) __naked {
 
 void *realloc(void *ptr, size_t size) __naked {
 	__asm
-	POP DE
-	POP BC
-	POP IX
-		PCALL(REALLOC)
-		PUSH IX
-		POP HL
 	PUSH IX
-	PUSH BC
-	PUSH DE
+	LD IX, 0
+	ADD IX, SP
+
+	LD D, (IX + 5)
+	LD E, (IX + 4)
+
+	LD B, (IX + 7)
+	LD C, (IX + 6)
+
+	PUSH DE \ POP IX
+
+	PCALL(REALLOC)
+	PUSH IX \ POP HL
+
+	JR Z, __realloc_done
+
+	LD HL, 0 ; NULL
+	POP IX
+	RET
+
+__realloc_done:
+	POP IX
 	RET
 	__endasm;
 	ptr; size;
