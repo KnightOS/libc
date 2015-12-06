@@ -44,6 +44,23 @@ char *strchr(const char *s, int c) {
 	return NULL;
 }
 
+void *memmove(void *s1, const void *s2, size_t n) {
+    char *dest = (char *)s1;
+    const char *src = (const char *)s2;
+    if (dest <= src) {
+        while (n--) {
+            *dest++ = *src++;
+        }
+    } else {
+        src += n;
+        dest += n;
+        while (n--) {
+            *--dest = *--src;
+        }
+    }
+    return s1;
+}
+
 size_t strlen(const char *s) {
 	size_t l = 0;
 	while (*s++) {
