@@ -17,27 +17,19 @@ bool directory_exists(char *path) {
 	path;
 }
 
-unsigned char create_directory(char *path, struct flash_ptr *address) {
+bool create_directory(char *path) {
 	__asm
 	POP IX ; Return point
 	POP DE ; path
 		PCALL(CREATEDIRECTORY)
-	LD B, H
-	LD C, L
-	POP HL ; address
-	PUSH HL ; restore address
 	PUSH DE ; restore path
+	LD L, 0
 	JR NZ, .error
-	LD (HL), C
-	INC HL
-	LD (HL), B
-	INC HL
-	LD (HL), A
-	XOR A
+	INC L
 .error:
-	LD L, A
+	LD (_errno), A
 	JP (IX)
 	__endasm;
-	path; address; 
+	path; 
 
 }

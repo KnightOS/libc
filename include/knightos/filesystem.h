@@ -3,11 +3,7 @@
 
 #include <stdbool.h>
 
-struct flash_ptr { 
-	char *address, 
-	page; 
-};
-unsigned char create_directory(char *path, struct flash_ptr *result);
+bool create_directory(char *path);
 void create_symlink(const char *path, const char *target_path);
 void delete_file(const char *path);
 bool directory_exists(const char *path);

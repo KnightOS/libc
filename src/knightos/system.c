@@ -95,11 +95,11 @@ unsigned char get_random() __naked {
 	__asm
 	PCALL(GETRANDOM)
 	LD L, A
-	ret
+	RET
 	__endasm;
 }
 
-void reboot() __naked {
+void reboot() {
 	__asm
 	POP IX
 	PCALL(REBOOT)
@@ -107,7 +107,7 @@ void reboot() __naked {
 	__endasm;
 }
 
-void suspend_device() __naked {
+void suspend_device() {
 	__asm
 	POP IX
 	PCALL(SUSPENDDEVICE)
