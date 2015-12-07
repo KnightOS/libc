@@ -17,7 +17,7 @@ bool directory_exists(char *path) {
 	path;
 }
 
-bool create_directory(char *path) {
+unsigned char create_directory(char *path) {
 	__asm
 	POP IX ; Return point
 	POP DE ; path
