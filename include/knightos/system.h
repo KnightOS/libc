@@ -11,6 +11,8 @@ void *realloc(void *ptr, size_t size);
 void *calloc(unsigned short nmemb, unsigned short size);
 void free(void *ptr);
 void load_library(const char *path);
+void reboot();
+void suspend_device();
 unsigned char get_random();
 
 #endif

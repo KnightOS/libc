@@ -120,6 +120,22 @@ unsigned char get_random() __naked {
 	__asm
 	PCALL(GETRANDOM)
 	LD L, A
-	ret
+	RET
+	__endasm;
+}
+
+void reboot() {
+	__asm
+	POP IX
+	PCALL(REBOOT)
+	PUSH IX
+	__endasm;
+}
+
+void suspend_device() {
+	__asm
+	POP IX
+	PCALL(SUSPENDDEVICE)
+	PUSH IX
 	__endasm;
 }
