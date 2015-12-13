@@ -122,10 +122,10 @@ static bool format_short(uint16_t num, uint16_t base, bool is_signed, struct for
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
 
-static bool format_long(uint32_t num, uint32_t base, bool is_signed, struct format_data *data) {
+static bool format_long(uint16_t num, uint16_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[32], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
-		if ((int32_t)num < 0) {
+		if ((int16_t)num < 0) {
 			num = -num;
 			sign = '-';
 		} else {
