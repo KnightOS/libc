@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdarg.h>
 
 int sprintf(char *str, const char *format, ...);
