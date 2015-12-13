@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <ctype.h>
+#include <string.h>
 
 struct format_data {
 	bool (*put)(char, void *);

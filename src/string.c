@@ -63,7 +63,15 @@ void *memmove(void *s1, const void *s2, size_t n) {
 
 size_t strlen(const char *s) {
 	size_t l = 0;
-	while (*s++) {
+	while (*s++ ) {
+		l++;
+	}
+	return l;
+}
+
+size_t strnlen(const char *s, size_t maxlen) {
+	size_t l = 0;
+	while (*s++ && l <= maxlen) {
 		l++;
 	}
 	return l;
