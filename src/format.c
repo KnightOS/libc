@@ -1,4 +1,4 @@
-#include <stdarg.h>
+#include <format.h>
 #include <stdbool.h>
 #include <stdint.h>
 #include <ctype.h>
@@ -11,21 +11,16 @@ struct format_data {
 	va_list args;
 	int count;
 	bool alternate, left;
-	char sign, pad;
+	char sign, pad, hex_offset;
 	int field_width, precision;
 	enum {
 		FORMAT_CHAR, FORMAT_SHORT, FORMAT_INT, FORMAT_LONG
 	} length;
 };
-
 static bool format_char(char c, struct format_data *data) {
-	if (!data->put(c, data->put_data)) {
-		return false;
-	}
 	data->count++;
-	return true;
+	return data->put(c, data->put_data);
 }
-
 static bool format_str(char *str, struct format_data *data) {
 	int str_width = strnlen(str, data->precision),
 		padding_width = data->field_width - str_width;
@@ -51,62 +46,56 @@ static bool format_str(char *str, struct format_data *data) {
 	}
 	return true;
 }
-
 static bool format_num(char sign, char *num, int num_width, struct format_data *data) {
+	char c;
 	int inner_width, outer_width;
 	inner_width = data->precision - num_width;
 	if (inner_width < 0) {
-		inner_width = 0
+		inner_width = 0;
 	}
 	outer_width = data->field_width - inner_width - (sign != '\0') - num_width;
 	if (outer_width < 0) {
 		outer_width = 0;
 	}
 
-	if (!modifiers->left_adjusted) {
-		while (outer_width) {
-			if (!format_char(pad, data)) {
+	if (!data->left) {
+		while (outer_width--) {
+			if (!format_char(data->pad, data)) {
 				return false;
 			}
-			outer_width--;
 		}
 	}
 
 	if (sign) {
-		if (!format_char('-', data)) {
+		if (!format_char(sign, data)) {
 			return false;
 		}
 	}
 
-	while (inner_width) {
+	while (inner_width--) {
 		if (!format_char('0', data)) {
 			return false;
 		}
-		inner_width--;
 	}
 
-	while (size) {
-		c = *p + '0';
+	while (num_width--) {
+		c = *p++ + '0';
 		if (c > '9') {
-			c += 'A' - '9' - 1;
+			c += data->hex_offset;
 		}
 		if (!format_char(c, data)) {
 			return false;
 		}
-		c++;
-		size--;
 	}
 
-	while (outer_width) {
-		if (!format_char(pad, data)) {
+	while (outer_width--) {
+		if (!format_char(' ', data)) {
 			return false;
 		}
-		outer_width--;
 	}
 
 	return true;
 }
-
 static bool format_byte(uint8_t num, uint8_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[8], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
@@ -124,7 +113,6 @@ static bool format_byte(uint8_t num, uint8_t base, bool is_signed, struct format
 	} while (num /= base);
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
-
 static bool format_short(uint16_t num, uint16_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[16], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
@@ -142,7 +130,6 @@ static bool format_short(uint16_t num, uint16_t base, bool is_signed, struct for
 	} while (num /= base);
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
-
 static bool format_long(uint32_t num, uint32_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[32], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
@@ -160,7 +147,6 @@ static bool format_long(uint32_t num, uint32_t base, bool is_signed, struct form
 	} while (num /= base);
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
-
 static bool format_int(int base, bool is_signed, struct format_data *data) {
 	switch (data->length) {
 		case FORMAT_CHAR:
@@ -174,18 +160,19 @@ static bool format_int(int base, bool is_signed, struct format_data *data) {
 	return false;
 }
 
-int format(bool (*put)(char, void *), void *data, const char *format, va_list args) {
+int format(bool (*put)(char, void *), void *put_data, const char *format, va_list args) {
 	int count = 0;
 	bool more;
 	struct format_data data;
 	data.put = put;
-	data.put_data = data;
+	data.put_data = put_data;
 	data.format = format;
 	data.args = args;
 	while (*format) {
 		if (*format == '%') {
-			data.alternate = data.zero_padded = data.left_adjusted = false;
+			data.alternate = false;
 			data.pad = ' ';
+			data.left = false;
 			data.sign = '\0';
 			more = true;
 			do {
@@ -220,6 +207,7 @@ int format(bool (*put)(char, void *), void *data, const char *format, va_list ar
 				data.field_width = -1;
 			}
 			if (*format == '.') {
+				data.pad = ' ';
 				if (isdigit(*++format)) {
 					data.precision = *format - '0';
 					while (isdigit(*++format)) {
@@ -259,36 +247,39 @@ int format(bool (*put)(char, void *), void *data, const char *format, va_list ar
 					format++;
 					data.length = FORMAT_LONG;
 					break;
-			}
-			switch (*format) {
+				}
+				switch (*format) {
 				case 'd':
 				case 'i':
 					if (!format_num(10, true, data)) {
-						return false;
+						return -1;
 					}
-					more = false;
 					break;
 				case 'u':
 					if (!format_num(10, false, data)) {
-						return false;
+						return -1;
 					}
-					more = false;
 					break;
 				case 'o':
 					if (!format_num(8, false, data)) {
-						return false;
+						return -1;
 					}
-					more = false;
 					break;
 				case 'x':
+					data->hex_offset = 'a' - '0' - 10;
 					if (!format_num(16, false, data)) {
-						return false;
+						return -1;
 					}
-					more = false;
+					break;
+				case 'X':
+					data->hex_offset = 'A' - '0' - 10;
+					if (!format_num(16, false, data)) {
+						return -1;
+					}
 					break;
 				case 's':
 					if (!format_str(va_arg(data.args, char *), data)) {
-						return false;
+						return -1;
 					}
 					break;
 				case 'n':
@@ -296,13 +287,12 @@ int format(bool (*put)(char, void *), void *data, const char *format, va_list ar
 					break;
 				case '%':
 					if (!format_char('%', data)) {
-						return data.count;
+						return -1;
 					}
 					break;
-				}
 			}
-		} else {
-			format_char(*format);
+		} else if (!format_char(*format)) {
+			return -1;
 		}
 		format++;
 	}
@@ -312,7 +302,6 @@ int format(bool (*put)(char, void *), void *data, const char *format, va_list ar
 struct format_buffer {
 	char *start, *end;
 };
-
 static bool format_put_string(char c, void *data) {
 	struct format_buffer *buffer = data;
 	if (buffer->start != buffer->end) {
