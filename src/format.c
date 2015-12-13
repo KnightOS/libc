@@ -122,10 +122,10 @@ static bool format_short(uint16_t num, uint16_t base, bool is_signed, struct for
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
 
-static bool format_long(uint16_t num, uint16_t base, bool is_signed, struct format_data *data) {
+static bool format_long(uint32_t num, uint32_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[32], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
-		if ((int16_t)num < 0) {
+		if ((int32_t)num < 0) {
 			num = -num;
 			sign = '-';
 		} else {
@@ -153,23 +153,23 @@ static bool format_int(int base, bool is_signed, struct format_data *data) {
 	return false;
 }
 
-int format(bool (*put)(char, void *), void *put_data, const char *format, va_list args) {
+int format(bool (*put)(char, void *), void *put_data, const char *formatting, va_list args) {
 	int count = 0;
 	bool more;
 	struct format_data data;
 	data.put = put;
 	data.put_data = put_data;
-	data.format = format;
+	data.format = formatting;
 	data.args = args;
-	while (*format) {
-		if (*format == '%') {
+	while (*formatting) {
+		if (*formatting == '%') {
 			data.alternate = false;
 			data.pad = ' ';
 			data.left = false;
 			data.sign = '\0';
 			more = true;
 			do {
-				switch (*++format) {
+				switch (*++formatting) {
 					case '#':
 						data.alternate = true;
 						break;
@@ -190,25 +190,25 @@ int format(bool (*put)(char, void *), void *put_data, const char *format, va_lis
 						break;
 				}
 			} while (more);
-			if (isdigit(*format)) {
-				data.field_width = *format - '0';
-				while (isdigit(*++format)) {
+			if (isdigit(*formatting)) {
+				data.field_width = *formatting - '0';
+				while (isdigit(*++formatting)) {
 					data.field_width *= 10;
-					data.field_width += *format - '0';
+					data.field_width += *formatting - '0';
 				}
 			} else {
 				data.field_width = -1;
 			}
-			if (*format == '.') {
+			if (*formatting == '.') {
 				data.pad = ' ';
-				if (isdigit(*++format)) {
-					data.precision = *format - '0';
-					while (isdigit(*++format)) {
+				if (isdigit(*++formatting)) {
+					data.precision = *formatting - '0';
+					while (isdigit(*++formatting)) {
 						data.precision *= 10;
-						data.precision += *format - '0';
+						data.precision += *formatting - '0';
 					}
-				} else if (*format == '-') {
-					while (isdigit(*++format));
+				} else if (*formatting == '-') {
+					while (isdigit(*++formatting));
 					data.precision = -1;
 				} else {
 					data.precision = 0;
@@ -216,32 +216,32 @@ int format(bool (*put)(char, void *), void *put_data, const char *format, va_lis
 			} else {
 				data.precision = -1;
 			}
-			switch (*format) {
+			switch (*formatting) {
 				case 'h':
-					if (format[1] == 'h') {
-						format += 2;
+					if (formatting[1] == 'h') {
+						formatting += 2;
 						data.length = FORMAT_CHAR;
 						break;
 					}
 				case 'z':
 				case 't':
-					format++;
+					formatting++;
 					data.length = FORMAT_SHORT;
 					break;
 				default:
 					data.length = FORMAT_INT;
 					break;
 				case 'l':
-					if (format[1] == 'l') {
-						format++;
+					if (formatting[1] == 'l') {
+						formatting++;
 					}
 				case 'L':
 				case 'j':
-					format++;
+					formatting++;
 					data.length = FORMAT_LONG;
 					break;
 				}
-				switch (*format) {
+				switch (*formatting) {
 				case 'd':
 				case 'i':
 					if (!format_int(10, true, &data)) {
@@ -284,10 +284,10 @@ int format(bool (*put)(char, void *), void *put_data, const char *format, va_lis
 					}
 					break;
 			}
-		} else if (!format_char(*format, &data)) {
+		} else if (!format_char(*formatting, &data)) {
 			return -1;
 		}
-		format++;
+		formatting++;
 	}
 	return data.count;
 }
