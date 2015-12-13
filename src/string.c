@@ -5,10 +5,10 @@
 // to these implementations in some circumstances.
 
 #undef memcpy
-void memcpy(void *_dest, const void *_src, size_t n) {
-	uint8_t *src = _src, *dest = _dest;
+void memcpy(void *d, const void *s, size_t n) {
+	uint8_t *src = s, *dst = d;
 	while (n--) {
-		*src = *dest;
+		*dst++ = *src++;
 	}
 }
 
@@ -16,21 +16,22 @@ void memcpy(void *_dest, const void *_src, size_t n) {
 void memset(void *s, int c, size_t n) {
 	uint8_t *src = s;
 	while (n--) {
-		*src = c;
+		*src++ = c;
 	}
 }
 
 #undef strcpy
 void strcpy(char *dst, const char *src) {
-	while (*src) {
-		*dst = *src++;
-	}
+	while ((*dst++ = *src++));
 }
 
 #undef strncpy
 void strncpy(char *dst, const char *src, size_t n) {
-	while (*src && n--) {
-		*dst = *src++;
+	while (n && (*dst++ = *src++)) {
+		n--;
+	}
+	while (n--) {
+		*dst++ = '\0';
 	}
 }
 
@@ -42,6 +43,16 @@ char *strchr(const char *s, int c) {
 		}
 	} while (*s++);
 	return NULL;
+}
+
+char *strrchr(const char *s, int c) {
+	char *result = NULL;
+	do {
+		if (*s == c) {
+			result = s;
+		}
+	} while (*s++);
+	return result;
 }
 
 void *memmove(void *s1, const void *s2, size_t n) {
@@ -63,7 +74,7 @@ void *memmove(void *s1, const void *s2, size_t n) {
 
 size_t strlen(const char *s) {
 	size_t l = 0;
-	while (*s++ ) {
+	while (*s++) {
 		l++;
 	}
 	return l;
@@ -71,16 +82,24 @@ size_t strlen(const char *s) {
 
 size_t strnlen(const char *s, size_t maxlen) {
 	size_t l = 0;
-	while (*s++ && l <= maxlen) {
+	while (maxlen-- && *s++) {
 		l++;
 	}
 	return l;
 }
 
 int strcmp(const char *s1, const char *s2) {
-	while ((*s1) && (*s1 == *s2)) {
+	while (*s1 && *s1 == *s2) {
 		++s1;
 		++s2;
 	}
-	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+	return (int)*s1 - (int)*s2;
+}
+
+int strncmp(const char *s1, const char *s2, size_t n) {
+	while (n-- && *s1 && *s1 == *s2) {
+		++s1;
+		++s2;
+	}
+	return (int)*s1 - (int)*s2;
 }
