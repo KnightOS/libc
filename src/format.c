@@ -4,30 +4,18 @@
 #include <ctype.h>
 #include <string.h>
 
-struct format_data {
-	bool (*put)(char, void *);
-	void *put_data;
-	const char *format;
-	va_list args;
-	int count;
-	bool alternate, left;
-	char sign, pad, hex_offset;
-	int field_width, precision;
-	enum {
-		FORMAT_CHAR, FORMAT_SHORT, FORMAT_INT, FORMAT_LONG
-	} length;
-};
 static bool format_char(char c, struct format_data *data) {
 	data->count++;
 	return data->put(c, data->put_data);
 }
+
 static bool format_str(char *str, struct format_data *data) {
 	int str_width = strnlen(str, data->precision),
-		padding_width = data->field_width - str_width;
+		padding_width = data->field_width- str_width;
 	if (padding_width < 0) {
 		padding_width = 0;
 	}
-	if (!data->left_adjusted) {
+	if (!data->left) {
 		while (padding_width--) {
 			if (!format_char(' ', data)) {
 				return false;
@@ -46,6 +34,7 @@ static bool format_str(char *str, struct format_data *data) {
 	}
 	return true;
 }
+
 static bool format_num(char sign, char *num, int num_width, struct format_data *data) {
 	char c;
 	int inner_width, outer_width;
@@ -79,7 +68,7 @@ static bool format_num(char sign, char *num, int num_width, struct format_data *
 	}
 
 	while (num_width--) {
-		c = *p++ + '0';
+		c = *num++; c += '0';
 		if (c > '9') {
 			c += data->hex_offset;
 		}
@@ -96,6 +85,7 @@ static bool format_num(char sign, char *num, int num_width, struct format_data *
 
 	return true;
 }
+
 static bool format_byte(uint8_t num, uint8_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[8], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
@@ -113,6 +103,7 @@ static bool format_byte(uint8_t num, uint8_t base, bool is_signed, struct format
 	} while (num /= base);
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
+
 static bool format_short(uint16_t num, uint16_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[16], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
@@ -130,6 +121,7 @@ static bool format_short(uint16_t num, uint16_t base, bool is_signed, struct for
 	} while (num /= base);
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
+
 static bool format_long(uint32_t num, uint32_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[32], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
@@ -147,6 +139,7 @@ static bool format_long(uint32_t num, uint32_t base, bool is_signed, struct form
 	} while (num /= base);
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
+
 static bool format_int(int base, bool is_signed, struct format_data *data) {
 	switch (data->length) {
 		case FORMAT_CHAR:
@@ -251,34 +244,34 @@ int format(bool (*put)(char, void *), void *put_data, const char *format, va_lis
 				switch (*format) {
 				case 'd':
 				case 'i':
-					if (!format_num(10, true, data)) {
+					if (!format_int(10, true, &data)) {
 						return -1;
 					}
 					break;
 				case 'u':
-					if (!format_num(10, false, data)) {
+					if (!format_int(10, false, &data)) {
 						return -1;
 					}
 					break;
 				case 'o':
-					if (!format_num(8, false, data)) {
+					if (!format_int(8, false, &data)) {
 						return -1;
 					}
 					break;
 				case 'x':
-					data->hex_offset = 'a' - '0' - 10;
-					if (!format_num(16, false, data)) {
+					data.hex_offset = 'a' - '0' - 10;
+					if (!format_int(16, false, &data)) {
 						return -1;
 					}
 					break;
 				case 'X':
-					data->hex_offset = 'A' - '0' - 10;
-					if (!format_num(16, false, data)) {
+					data.hex_offset = 'A' - '0' - 10;
+					if (!format_int(16, false, &data)) {
 						return -1;
 					}
 					break;
 				case 's':
-					if (!format_str(va_arg(data.args, char *), data)) {
+					if (!format_str(va_arg(data.args, char *), &data)) {
 						return -1;
 					}
 					break;
@@ -286,26 +279,15 @@ int format(bool (*put)(char, void *), void *put_data, const char *format, va_lis
 					*va_arg(data.args, int *) = data.count;
 					break;
 				case '%':
-					if (!format_char('%', data)) {
+					if (!format_char('%', &data)) {
 						return -1;
 					}
 					break;
 			}
-		} else if (!format_char(*format)) {
+		} else if (!format_char(*format, &data)) {
 			return -1;
 		}
 		format++;
 	}
 	return data.count;
-}
-
-struct format_buffer {
-	char *start, *end;
-};
-static bool format_put_string(char c, void *data) {
-	struct format_buffer *buffer = data;
-	if (buffer->start != buffer->end) {
-		*buffer->start++ = c;
-	}
-	return true;
 }
