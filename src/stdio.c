@@ -25,16 +25,16 @@ int vsnprintf(char *str, size_t size, const char *format, va_list args) {
 	return count;
 }
 
-int snprintf(char *str, size_t size, const char *format, ...) {
+int snprintf(char *str, size_t size, const char *formatting, ...) {
 	va_list args;
 	int count;
-	va_start(args, format);
-	count = vsnprintf(str, size, format, args);
+	va_start(args, formatting);
+	count = vsnprintf(str, size, formatting, args);
 	va_end(args);
 	return count;
 }
 
-int vsprintf(char *str, const char *format, va_list args) {
+int vsprintf(char *str, const char *formatting, va_list args) {
 	int count;
 	struct format_buffer buffer;
 	buffer.start = str;
@@ -44,11 +44,11 @@ int vsprintf(char *str, const char *format, va_list args) {
 	return count;
 }
 
-int sprintf(char *str, const char *format, ...) {
+int sprintf(char *str, const char *formatting, ...) {
 	va_list args;
 	int count;
-	va_start(args, format);
-	count = vsprintf(str, format, args);
+	va_start(args, formatting);
+	count = vsprintf(str, formatting, args);
 	va_end(args);
 	return count;
 }

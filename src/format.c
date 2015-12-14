@@ -3,6 +3,10 @@
 #include <ctype.h>
 #include <string.h>
 
+struct format_buffer {
+	char *start, *end;
+};
+
 struct format_data {
 	bool (*put)(char, void *);
 	void *put_data;
@@ -16,13 +20,15 @@ struct format_data {
 		FORMAT_CHAR, FORMAT_SHORT, FORMAT_INT, FORMAT_LONG
 	} length;
 };
+
 static bool format_char(char c, struct format_data *data) {
 	data->count++;
 	return data->put(c, data->put_data);
 }
+
 static bool format_str(char *str, struct format_data *data) {
-	int str_width = strnlen(str, data->precision);
-	int padding_width = data->field_width - str_width;
+	int str_width = strnlen(str, data->precision),
+		padding_width = data->field_width - str_width;
 	if (padding_width < 0) {
 		padding_width = 0;
 	}
@@ -47,6 +53,7 @@ static bool format_str(char *str, struct format_data *data) {
 	}
 	return true;
 }
+
 static bool format_num(char sign, char *num, int num_width, struct format_data *data) {
 	char c;
 	int inner_width, outer_width;
@@ -80,7 +87,8 @@ static bool format_num(char sign, char *num, int num_width, struct format_data *
 	}
 
 	while (num_width--) {
-		c = *num++ + '0';
+		c = *num++;
+		c += '0';
 		if (c > '9') {
 			c += data->hex_offset;
 		}
@@ -89,14 +97,17 @@ static bool format_num(char sign, char *num, int num_width, struct format_data *
 		}
 	}
 
-	while (outer_width--) {
-		if (!format_char(' ', data)) {
-			return false;
+	if (data->left) {
+		while (outer_width--) {
+			if (!format_char(' ', data)) {
+				return false;
+			}
 		}
 	}
 
 	return true;
 }
+
 static bool format_byte(uint8_t num, uint8_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[8], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
@@ -114,6 +125,7 @@ static bool format_byte(uint8_t num, uint8_t base, bool is_signed, struct format
 	} while (num /= base);
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
+
 static bool format_short(uint16_t num, uint16_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[16], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
@@ -131,6 +143,7 @@ static bool format_short(uint16_t num, uint16_t base, bool is_signed, struct for
 	} while (num /= base);
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
+
 static bool format_long(uint32_t num, uint32_t base, bool is_signed, struct format_data *data) {
 	char sign, buffer[32], *ptr = buffer + sizeof buffer;
 	if (is_signed) {
@@ -148,6 +161,7 @@ static bool format_long(uint32_t num, uint32_t base, bool is_signed, struct form
 	} while (num /= base);
 	return format_num(sign, ptr, buffer + sizeof buffer - ptr, data);
 }
+
 static bool format_int(int base, bool is_signed, struct format_data *data) {
 	switch (data->length) {
 		case FORMAT_CHAR:
