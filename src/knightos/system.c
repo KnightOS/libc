@@ -82,11 +82,11 @@ void *calloc(size_t nmemb, size_t size) {
 
 void load_library(const char *path) {
 	__asm
-	POP IX
+	POP HL
 	POP DE
 		PCALL(LOADLIBRARY)
 	PUSH DE
-	PUSH IX
+	PUSH HL
 	__endasm;
 	path;
 }
@@ -101,16 +101,16 @@ unsigned char get_random() __naked {
 
 void reboot() {
 	__asm
-	POP IX
+	POP HL
 	PCALL(REBOOT)
-	PUSH IX
+	PUSH HL
 	__endasm;
 }
 
 void suspend_device() {
 	__asm
-	POP IX
+	POP HL
 	PCALL(SUSPENDDEVICE)
-	PUSH IX
+	PUSH HL
 	__endasm;
 }

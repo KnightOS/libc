@@ -4,7 +4,7 @@
 
 bool directory_exists(char *path) {
 	__asm
-	POP IX ; Return point
+	POP HL ; Return point
 	POP DE ; path
 		PCALL(DIRECTORYEXISTS)
 	PUSH DE ; restore path
@@ -12,14 +12,14 @@ bool directory_exists(char *path) {
 	JR NZ, .notExists
 	INC L
 .notExists:
-	JP (IX)
+	JP (HL)
 	__endasm;
 	path;
 }
 
 bool create_directory(char *path) {
 	__asm
-	POP IX ; Return point
+	POP HL ; Return point
 	POP DE ; path
 		PCALL(CREATEDIRECTORY)
 	PUSH DE ; restore path
@@ -28,7 +28,7 @@ bool create_directory(char *path) {
 	INC L
 .error:
 	LD (_errno), A
-	JP (IX)
+	JP (HL)
 	__endasm;
 	path; 
 
