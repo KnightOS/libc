@@ -22,16 +22,20 @@ void memset(void *s, int c, size_t n) {
 
 #undef strcpy
 void strcpy(char *dst, const char *src) {
-	while ((*dst++ = *src++));
+	while (*src) { 
+		*dst++ = *src++;
+	} 
+	*dst = '\0';
 }
 
 #undef strncpy
 void strncpy(char *dst, const char *src, size_t n) {
-	while (n && (*dst++ = *src++)) {
-		n--;
-	}
-	while (n--) {
-		*dst++ = '\0';
+	while (n && *src) { 
+		n--; 
+		*dst++ = *src++; 
+	} 
+	while (n--) { 
+		*dst++ = '\0'; 
 	}
 }
 
