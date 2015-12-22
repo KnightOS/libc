@@ -176,9 +176,9 @@ static bool format_int(int base, bool is_signed, struct format_data *data) {
 }
 
 int format_callback(bool (*put)(char, void *), void *put_data, const char *format, va_list args) {
-	int count = 0;
 	bool more;
 	struct format_data data;
+	data.count = 0;
 	data.put = put;
 	data.put_data = put_data;
 	data.format = format;

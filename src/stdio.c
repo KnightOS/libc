@@ -73,10 +73,12 @@ int vasprintf(char **str, const char *format, va_list args) {
 
 	length = 128;
 	buffer = malloc(length);
+	
 	if (buffer == NULL) {
-		count = NULL;
+		*str = NULL;
 		return -1;
 	}
+
 	va_copy(args2, args);
 
 	count = vsnprintf(buffer, length, format, args);
