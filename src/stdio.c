@@ -78,6 +78,7 @@ int vasprintf(char **str, const char *format, va_list args) {
 		return -1;
 	}
 	va_copy(args2, args);
+
 	count = vsnprintf(buffer, length, format, args);
 	if (count < 0) {
 		free(buffer);
@@ -88,10 +89,12 @@ int vasprintf(char **str, const char *format, va_list args) {
 
 	if (count < length) {
 		new_buffer = realloc(buffer, count + 1);
-		if (new_buffer == NULL)
+		if (new_buffer == NULL) {
 			*str = buffer;
-		else
+		}
+		else {
 			*str = new_buffer;
+		}
 		va_end(args2);
 		return count;
 	}
