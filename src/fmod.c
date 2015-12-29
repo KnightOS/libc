@@ -1,8 +1,11 @@
 #include <math.h>
 
 double fmod(double x, double div) {
-    while(x > div) {
-        x -= div;
-    }
-    return x;
+	if(div == 0) {
+		return 0;
+	}
+	while(x > div) {
+		x -= div;
+	}
+	return x;
 }
