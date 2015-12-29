@@ -22,7 +22,7 @@ void draw_sprite(SCREEN *screen, unsigned char x, unsigned char y, unsigned char
 void draw_sprite_and(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite);
 void draw_sprite_or(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite);
 void draw_sprite_xor(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite);
-void draw_rect_and(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y);
+void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y);
 void draw_char(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value);
 void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short value);
 void draw_byte(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value);
