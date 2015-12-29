@@ -203,8 +203,7 @@ void draw_sprite_xor(SCREEN *screen, unsigned char x, unsigned char y, unsigned 
 	screen; x; y; height; sprite;
 }
 
-/* this doesn't work */
-void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y) __naked {
+void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y) {
 	__asm
 	POP HL ; Return point
 	ld (_saved_return_point), hl
@@ -221,7 +220,6 @@ void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, uns
 
 		PCALL(RECTOR)
 	PUSH DE
-	INC SP
 	PUSH BC
 	PUSH IY
 	ld hl, (_saved_return_point)
