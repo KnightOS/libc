@@ -107,3 +107,14 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 	}
 	return (int)*s1 - (int)*s2;
 }
+
+char *strcat(char *dst, char *src) {
+	char *cp = dst;
+	while (*cp) {
+		cp++;
+	}
+	while (*cp++ = *src++) {
+		;
+	}
+	return dst;
+}

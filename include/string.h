@@ -10,6 +10,7 @@
 #define strchr(s, c) __builtin_strchr(s, c)
 #define memset(dst, c, n) __builtin_memset(dst, c, n)
 char *strrchr(const char *s, int c);
+char *strcat(char *dst, char *src);
 
 /* Other */
 void *memmove(void *s1, const void *s2, size_t n);
