@@ -1,8 +1,16 @@
 #ifndef __KEYS_H
 #define __KEYS_H
-
+/**
+* Returns the currently pressed keycode, or zero if no keys are pressed
+**/
 unsigned char get_key();
+/**
+* Blocks until a key is pressed, then returns that key code
+**/
 unsigned char wait_key();
+/**
+* Blocks until all keys are released
+**/
 void flush_keys();
 
 #define KEY_DOWN 0x01
