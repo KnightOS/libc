@@ -3,7 +3,7 @@
 
 // define some constants
 #define M_E              2.718281828    /* e */
-#define M_LOG2E	         1.442695040    /* log_2 e */
+#define M_LOG2E	       1.442695040    /* log_2 e */
 #define M_LOG10E         0.434294481    /* log_10 e */
 #define M_LN2            0.693147180    /* log_e 2 */
 #define M_LN10           2.302585092    /* log_e 10 */
@@ -33,6 +33,7 @@ double tanh(double);
 
 double pow(double x, double y);
 float powf(float x, float y);
+
 
 #endif
 

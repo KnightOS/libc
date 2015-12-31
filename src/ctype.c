@@ -45,3 +45,4 @@ int isalpha(int c) {
 int isalnum(int c) {
 	return isdigit(c) || isalpha(c);
 }
+
