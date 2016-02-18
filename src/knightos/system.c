@@ -1,6 +1,7 @@
 #include <knightos/system.h>
 #include <kernel.h>
 #include <stddef.h>
+#include <errno.h>
 
 void get_lcd_lock() __naked {
 	__asm
@@ -37,24 +38,16 @@ void ksleep(unsigned short msecs) __naked {
 
 void *malloc(size_t size) __naked {
 	__asm
+	POP HL
+	POP BC
+	PUSH BC
 	PUSH IX
-	LD IX, 0
-	ADD IX, SP
-
-	LD B, (IX + 5)
-	LD C, (IX + 4)
-
 	PCALL(MALLOC)
-	PUSH IX \ POP HL
-
-	JR Z, __malloc_done
-
-	LD HL, 0 ; NULL
-	POP IX
-	RET
-
-__malloc_done:
-	POP IX
+	EX (SP), IX
+	EX (SP), HL
+	RET Z ; Z is set on success
+	LD (_errno), A
+	LD HL, 0
 	RET
 	__endasm;
 	size;
@@ -62,41 +55,29 @@ __malloc_done:
 
 void *realloc(void *ptr, size_t size) __naked {
 	__asm
-	PUSH IX
-	LD IX, 0
-	ADD IX, SP
-
-	LD D, (IX + 5)
-	LD E, (IX + 4)
-
-	LD B, (IX + 7)
-	LD C, (IX + 6)
-
-	PUSH DE \ POP IX
-
+	POP HL
+	POP DE
+	POP BC
+	PUSH BC
+	PUSH DE ; replace on stack and pop another copy to IX 
+	PUSH DE
+	EX (SP), IX
 	PCALL(REALLOC)
-	PUSH IX \ POP HL
-
-	JR Z, __realloc_done
-
+	EX (SP), IX
+	EX (SP), HL
+	RET Z
 	LD HL, 0 ; NULL
-	POP IX
-	RET
-
-__realloc_done:
-	POP IX
-	RET
 	__endasm;
 	ptr; size;
 }
 
 void free(void *ptr) {
 	__asm
-	POP DE
-	POP IX
-		PCALL(FREE)
-	PUSH IX
-	PUSH DE
+	POP HL
+	EX (SP), IX
+	PCALL(FREE)
+	EX (SP), IX
+	JP (HL)
 	__endasm;
 	ptr;
 }
