@@ -52,28 +52,18 @@ void *malloc(size_t size) __naked {
 
 void *realloc(void *ptr, size_t size) __naked {
 	__asm
-	PUSH IX
-	LD IX, 0
-	ADD IX, SP
-
-	LD D, (IX + 5)
-	LD E, (IX + 4)
-
-	LD B, (IX + 7)
-	LD C, (IX + 6)
-
-	PUSH DE \ POP IX
-
+	POP HL
+	POP DE
+	POP BC
+	PUSH BC
+	PUSH DE ; replace on stack and pop another copy to IX 
+	PUSH DE
+	EX (SP), IX
 	PCALL(REALLOC)
-	PUSH IX \ POP HL
-
-	JR Z, __realloc_done
-
+	EX (SP), IX
+	EX (SP), HL
+	RET Z
 	LD HL, 0 ; NULL
-
-__realloc_done:
-	POP IX
-	RET
 	__endasm;
 	ptr; size;
 }
