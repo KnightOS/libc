@@ -29,11 +29,13 @@ void reset_legacy_lcd_mode() {
 	__endasm;
 }
 
-void clear_color_lcd(char *color) {
+void clear_color_lcd(uint16_t *color) {
 	__asm
+	POP DE ; return address
 	POP IY ; color
 		PCALL(CLEARCOLORLCD)
 	PUSH IY
+	PUSH DE
 	__endasm;
 	color;
 }
@@ -65,7 +67,7 @@ void write_lcd_register(char reg, char *value) {
 	reg; value;
 }
 
-void clip_color_rectangle(unsigned short color, char height, short width, short x, char y) {
+void clip_color_rectangle(uint16_t color, char height, short width, short x, char y) {
 	__asm
 	POP AF ; return addr
 	POP IY ; color

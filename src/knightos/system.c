@@ -1,6 +1,7 @@
 #include <knightos/system.h>
 #include <kernel.h>
 #include <stddef.h>
+#include <errno.h>
 
 void get_lcd_lock() __naked {
 	__asm
@@ -44,8 +45,10 @@ void *malloc(size_t size) __naked {
 	PCALL(MALLOC)
 	EX (SP), IX
 	EX (SP), HL
-	RET Z
+	RET Z ; Z is set on success
+	LD (_errno), A
 	LD HL, 0
+	RET
 	__endasm;
 	size;
 }

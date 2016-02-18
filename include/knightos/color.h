@@ -1,6 +1,7 @@
 #ifndef __COLOR_H
 #define __COLOR_H
 #include <stdbool.h>
+#include <stdint.h>
 
 /**
 * Returns true if the current thread is in legacy mode
@@ -13,14 +14,14 @@ bool is_legacy();
 bool color_supported();
 
 /**
-* Returns true if the current thread is in legacy mode
+* Sets all pixels on the LCD to a specified color in color mode.
 **/
-void clear_color_lcd(char *color);
+void clear_color_lcd(uint16_t *color);
 
 /**
 * Draws a clipped rectangle of the specified size with the specified color
 **/
-void clip_color_rectangle(unsigned short color, char height, short width, short x, char y);
+void clip_color_rectangle(uint16_t color, char height, short width, short x, char y);
 
 /**
 * Turns off the color LCD and backlight
