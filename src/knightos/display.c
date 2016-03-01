@@ -265,3 +265,65 @@ void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short
 	__endasm;
 	screen; x; y; value;
 }
+
+void invert_pixel(SCREEN *screen, char x, char y) {
+	__asm
+	POP BC ; return
+	POP IY ; screen
+	DEC SP
+	POP AF ; x
+	DEC SP
+	POP HL ; y
+	; Swap H and L
+		ld l, h
+		PCALL(INVERTPIXEL)
+	PUSH HL
+	INC SP
+	PUSH AF
+	INC SP
+	PUSH IY
+	PUSH BC
+	__endasm;
+	screen; x; y;
+}
+void reset_pixel(SCREEN *screen, char x, char y) {
+	__asm
+	POP BC ; return
+	POP IY ; screen
+	DEC SP
+	POP AF ; x
+	DEC SP
+	POP HL ; y
+	; Swap H and L
+		ld l, h
+		PCALL(RESETPIXEL)
+	PUSH HL
+	INC SP
+	PUSH AF
+	INC SP
+	PUSH IY
+	PUSH BC
+	__endasm;
+	screen; x; y;
+}
+
+void set_pixel(SCREEN *screen, char x, char y) {
+	__asm
+	POP BC ; return
+	POP IY ; screen
+	DEC SP
+	POP AF ; x
+	DEC SP
+	POP HL ; y
+	; Swap H and L
+		ld l, h
+		PCALL(SETPIXEL)
+	PUSH HL
+	INC SP
+	PUSH AF
+	INC SP
+	PUSH IY
+	PUSH BC
+	__endasm;
+	screen; x; y;
+}

@@ -91,4 +91,19 @@ void draw_long(SCREEN *screen, unsigned char x, unsigned char y, unsigned long v
 * Set the left-margin for draw_string
 **/
 void set_left_margin(unsigned char margin);
+
+/**
+* Inverts a pixel on the screen buffer
+**/
+void invert_pixel(SCREEN *screen, char x, char y);
+
+/**
+* Resets a pixel on the screen buffer
+**/
+void reset_pixel(SCREEN *screen, char x, char y);
+
+/**
+* Sets a pixel on the screen buffer
+**/
+void set_pixel(SCREEN *screen, char x, char y);
 #endif
