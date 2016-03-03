@@ -62,10 +62,25 @@ void draw_sprite_or(SCREEN *screen, unsigned char x, unsigned char y, unsigned c
 **/
 void draw_sprite_xor(SCREEN *screen, unsigned char x, unsigned char y, unsigned char height, const void *sprite);
 
+/** 
+* Draws a rectangle using given GFX_BLEND_MODE
+**/
+void draw_rectangle(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y, GFX_BLEND_MODE blend_mode);
+
 /**
 * Draws a rectangle using OR logic (turn pixels on)
 **/
 void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y);
+
+/**
+* Draws a rectangle using AND logic (turn pixels off)
+**/
+void draw_rect_and(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y);
+
+/**
+* Draws a rectangle using XOR logic (invert pixels)
+**/
+void draw_rect_xor(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y);
 
 /**
 * Draws a character at x, y
