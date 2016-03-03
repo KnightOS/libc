@@ -121,13 +121,13 @@ void draw_sprite(SCREEN *screen, unsigned char x, unsigned char y, unsigned char
 	switch (blend_mode) {
 	case GFX_AND:
 		draw_sprite_and(screen, x, y, height, sprite);
-    	break;
+		break;
 	case GFX_OR:
 		draw_sprite_or(screen, x, y, height, sprite);
-    	break;
+		break;
  	case GFX_XOR:
 		draw_sprite_xor(screen, x, y, height, sprite);
-    	break;
+		break;
     }
 }
 
@@ -203,6 +203,20 @@ void draw_sprite_xor(SCREEN *screen, unsigned char x, unsigned char y, unsigned 
 	screen; x; y; height; sprite;
 }
 
+void draw_rectangle(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y, GFX_BLEND_MODE blend_mode) {
+	switch (blend_mode) {
+	case GFX_AND:
+		draw_rect_and(screen, width, height, x, y);
+		break;
+	case GFX_OR:
+		draw_rect_or(screen, width, height, x, y);
+		break;
+ 	case GFX_XOR:
+		draw_rect_xor(screen, width, height, x, y);
+		break;
+    }
+}
+
 void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y) {
 	__asm
 	POP HL ; Return point
@@ -219,6 +233,56 @@ void draw_rect_or(SCREEN *screen, unsigned char width, unsigned char height, uns
 		ld e, a
 
 		PCALL(RECTOR)
+	PUSH DE
+	PUSH BC
+	PUSH IY
+	ld hl, (_saved_return_point)
+	PUSH HL
+	__endasm;
+	screen; width; height; x; y;
+}
+
+void draw_rect_and(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y) {
+	__asm
+	POP HL ; Return point
+	ld (_saved_return_point), hl
+	POP IY ; screen
+	POP BC ; width, height
+	POP DE ; x, y
+		ld a, b
+		ld b, c
+		ld c, a
+
+		ld a, d
+		ld l, e
+		ld e, a
+
+		PCALL(RECTAND)
+	PUSH DE
+	PUSH BC
+	PUSH IY
+	ld hl, (_saved_return_point)
+	PUSH HL
+	__endasm;
+	screen; width; height; x; y;
+}
+
+void draw_rect_xor(SCREEN *screen, unsigned char width, unsigned char height, unsigned char x, unsigned char y) {
+	__asm
+	POP HL ; Return point
+	ld (_saved_return_point), hl
+	POP IY ; screen
+	POP BC ; width, height
+	POP DE ; x, y
+		ld a, b
+		ld b, c
+		ld c, a
+
+		ld a, d
+		ld l, e
+		ld e, a
+
+		PCALL(RECTXOR)
 	PUSH DE
 	PUSH BC
 	PUSH IY
