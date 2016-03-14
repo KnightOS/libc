@@ -1,13 +1,14 @@
 #include <math.h>
 
 double fmod(double x, double div) {
-	if(div != div) {
+	//if div == nan return x directly
+	if (div != div) {
 		return x;
 	}
-	if(div == 0) {
+	if (div == 0) {
 		return 0.0 / 0.0;
 	}
-	while(x > div) {
+	while (x > div) {
 		x -= div;
 	}
 	return x;
