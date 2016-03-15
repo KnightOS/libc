@@ -6,7 +6,7 @@ double fmod(double x, double div) {
 		return x;
 	}
 	if (div == 0) {
-		return 0.0 / 0.0;
+		return NAN;
 	}
 	return x - (int) (x / div) * div;
 }

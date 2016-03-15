@@ -16,6 +16,7 @@
 #define M_2_SQRTPI       1.128379167	/* 2/sqrt(pi) */
 #define M_SQRT2          1.414213562	/* sqrt(2) */
 #define M_SQRT1_2        0.707106781	/* 1/sqrt(2) */
+#define NAN              0x7FC00000
 
 int abs(int);
 double fabs(double);
