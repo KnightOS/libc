@@ -9,7 +9,6 @@ char open_file_read(const char *path) {
 		PCALL(OPENFILEREAD) ; dont PUSH DE because this returns it
 	JR Z, .error ; Z is reset on error
 	LD L, D ; file stream_id
-	PUSH BC
 .error:
 	LD (_errno), A
 	PUSH BC
@@ -24,7 +23,6 @@ char open_file_write(const char *path) {
 		PCALL(OPENFILEWRITE) ; dont restore DE because this returns it
 	JR Z, .error ; Z is reset on error
 	LD L, D  ; file stream_id
-	PUSH BC
 .error:
 	LD (_errno), A
 	PUSH BC
@@ -84,7 +82,6 @@ bool write_word(char stream_id, char *value) {
 	LD L, 0
 	JR Z, .error
 	INC L
-	PUSH BC
 .error:
 	LD (_errno), A
 	PUSH BC
