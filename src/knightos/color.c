@@ -87,3 +87,21 @@ void clip_color_rectangle(uint16_t color, char height, short width, short x, cha
 	__endasm;
 	color; height; width; x; y;
 }
+
+void set_lcd_window(uint8_t top_border, uint8_t bottom_border, uint16_t right_border, uint16_t left_border) {
+	__asm
+	POP AF ; return
+	POP BC ; top_border, bottom_border
+	POP DE ; right_border
+	POP HL ; left_border
+		LD A, C ; swap top_border and bottom_border
+		LD C, B
+		LD B, A
+		PCALL(SETLCDWINDOW)
+	PUSH HL
+	PUSH DE
+	PUSH BC
+	PUSH AF
+	__endasm;
+	top_border; right_border; bottom_border; left_border;
+}

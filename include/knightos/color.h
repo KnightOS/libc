@@ -51,7 +51,7 @@ void reset_legacy_lcd_mode();
 /**
 * Sets the LCD's clipping window. Values are inclusive
 **/
-void set_lcd_window(char top_border, char *right_border, char bottom_border, char *left_border);
+void set_lcd_window(uint8_t top_border, uint8_t bottom_border, uint16_t right_border, uint16_t left_border);
 
 /**
 * Writes a 16-bit value to a color LCD register
