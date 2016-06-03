@@ -4,7 +4,7 @@
 #include <sys/types.h>
 
 /**
-* Returns the position of the first (least signifigant) bit
+* Returns the position of the first (least significant) bit
 **/
 int ffs(int);
 
