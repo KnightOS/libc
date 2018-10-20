@@ -35,7 +35,7 @@ bool file_exists(const char *path);
 * Renames a file
 * Note: errno is set on error
 **/
-void rename_file(const char *path, const *char name);
+void rename_file(const char *path, const char *name);
 
 
 #endif
