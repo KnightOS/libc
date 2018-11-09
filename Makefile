@@ -18,15 +18,7 @@ HEADERS+=$(patsubst include/tios/%.h,$(INC)tios/%.h,$(wildcard include/tios/*.h)
 HEADERS+=$(patsubst include/sys/%.h,$(INC)sys/%.h,$(wildcard include/sys/*.h))
 HEADERS+=$(patsubst include/experimental/%.h,$(INC)experimental/%.h,$(wildcard include/experimental/*.h))
 
-ifneq ($(strip $(KERNEL_PATH)),None)
-ALL_TARGETS:=kernel $(SLIB)c $(HEADERS)
-kernel:
-	cd $(KERNEL_PATH) && make $(PLATFORM)
-	cp $(KERNEL_PATH)/bin/include/kernel.inc $(SDK)include/
-	cp $(KERNEL_PATH)/bin/include/kernel.h $(SDK)include/
-else
 ALL_TARGETS:=$(SLIB)c $(HEADERS)
-endif
 
 $(SLIB)c: dependencies $(OBJECTS)
 	mkdir -p $(SLIB)
