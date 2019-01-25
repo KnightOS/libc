@@ -2,24 +2,27 @@
 #include <kernel.h>
 #include <stdbool.h>
 
-bool is_legacy() {
+bool is_legacy() __naked {
 	__asm
 	PCALL(CHECKLEGACYLCDMODE)
 	LD L, 0
-	JR Z, .legacy
+	RET NZ
 .legacy:
 	INC L
+    RET
 	__endasm;
 }
 
-bool color_supported() {
+bool color_supported() __naked {
 	__asm
 	PCALL(COLORSUPPORTED)
 	LD L, 0
 	JR NZ, .notSupported
 	INC L
+    RET
 .notSupported:
 	LD (_errno), A
+    RET
 	__endasm;
 }
 
