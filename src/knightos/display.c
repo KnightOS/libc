@@ -340,6 +340,40 @@ void draw_signed(SCREEN* screen, unsigned char x, unsigned char y, signed short 
     return;
 }
 
+void draw_float(SCREEN* screen, unsigned char x, unsigned char y, float value){
+    /* Implementation is weird and slow because of non-working snprintf. Indeed, %f format strings are not yet implemented */
+    unsigned int integer_part;
+    unsigned int frac_part;
+    unsigned int integer_part_len;
+    bool sgn = (value < 0);
+    
+    
+    value = sgn ? -value : value;
+    
+    integer_part = (unsigned int)value;
+    frac_part = ((value - (float)integer_part)*10000);
+    
+#define __log10u(x) ((x >= 10000000u) ? 7 : (x >= 1000000u) ? 6 : \
+        (x >= 100000u) ? 5 : (x >= 10000u) ? 4 : \
+        (x >= 1000u) ? 3 : (x >= 100u) ? 2 : (x >= 10u) ? 1u : 0u)
+    
+    integer_part_len = (__log10u(integer_part)) + 1;
+    
+    if(sgn){
+        draw_char(screen, x, y, '-');
+        x += 4;
+    }
+    
+    draw_short(screen, x, y, integer_part);
+    x +=  integer_part_len*4;
+    draw_char(screen, x, y, '.');
+    
+    x += 4;
+    draw_short(screen, x, y, frac_part);
+
+    return;
+}
+
 void invert_pixel(SCREEN *screen, char x, char y) {
 	__asm
 	POP BC ; return
