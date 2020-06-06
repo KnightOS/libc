@@ -330,6 +330,16 @@ void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short
 	screen; x; y; value;
 }
 
+void draw_signed(SCREEN* screen, unsigned char x, unsigned char y, signed short value) {
+    if(value < 0){
+        draw_char(screen, x, y, '-');
+        x += 4;
+        value = -value;
+    }
+    draw_short(screen, x, y, value);
+    return;
+}
+
 void invert_pixel(SCREEN *screen, char x, char y) {
 	__asm
 	POP BC ; return
