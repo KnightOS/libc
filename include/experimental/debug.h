@@ -31,9 +31,9 @@
 
 #define debug(screen, msg, draw_func) debug_hinted(screen, msg, "", __DEFAULT_DEBUG_TIMEOUT, draw_func)
 
-#define debug_str(screen, msg) debug(screen, msg, "str:", __DEFAULT_DEBUG_TIMEOUT, draw_string)
-#define debug_short(screen, msg) debug(screen, msg, "short:", __DEFAULT_DEBUG_TIMEOUT, draw_short)
-#define debug_signed(screen, msg) debug(screen, msg, "signed:", __DEFAULT_DEBUG_TIMEOUT, draw_signed)
+#define debug_str(screen, msg) debug_hinted(screen, msg, "str:", __DEFAULT_DEBUG_TIMEOUT, draw_string)
+#define debug_short(screen, msg) debug_hinted(screen, msg, "short:", __DEFAULT_DEBUG_TIMEOUT, draw_short)
+#define debug_signed(screen, msg) debug_hinted(screen, msg, "signed:", __DEFAULT_DEBUG_TIMEOUT, draw_signed)
 #define debug_float(screen, msg) debug_hinted(screen, msg, "float:", __DEFAULT_DEBUG_TIMEOUT, draw_float)
 #define debug_float_hinted(screen, msg, hint) debug_hinted(screen, msg, hint, __DEFAULT_DEBUG_TIMEOUT, draw_float)
 
