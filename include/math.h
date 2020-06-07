@@ -129,4 +129,12 @@ float ceilf(float x);
 float floorf(float x);
 float modff(float x, float * y);
 
+/* Non-standard functions */
+
+/* Doing decimal logarithm this way for unsigned integers is actually faster than it may look, and even allows for compile-time evaluation on constants. */
+#define log10u(x) ((x >= 1000000000u) ? 9 : (x >= 100000000u) ? 8 : \
+        (x >= 10000000u) ? 7 : (x >= 1000000u) ? 6 : \
+        (x >= 100000u) ? 5 : (x >= 10000u) ? 4 : \
+        (x >= 1000u) ? 3 : (x >= 100u) ? 2 : (x >= 10u) ? 1u : 0u)
+
 #endif  /* _INC_MATH */
