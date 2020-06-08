@@ -20,4 +20,15 @@ int strcasecmp(const char *, const char *);
 int strncasecmp(const char *, const char *, size_t);
 //int strncasecmp_l(const char *, const char *, size_t, locale_t);
 
+/**
+ * Mostly ANSI compliant strtof function - converts a string into a float, ignoring blanks at the begining
+**/
+float strtof (unsigned char* str, char** endptr);
+
+/**
+ * Mostly ANSI compliant strtoi function - converts a string into an int, ignoring blanks at the begining
+ * Does not yet support non decimal bases
+**/
+int strtoi (unsigned char* str, char** endptr);
+
 #endif
