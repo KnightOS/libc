@@ -8,6 +8,8 @@
 
 #define __DEFAULT_DEBUG_TIMEOUT 150
 
+#ifndef KCC_DISABLE_DEBUG
+
 #define debug_hinted(/* SCREEN* */ screen, msg, /* char* */ hint, /* int */ timeout, /* void(SCREEN*, unsigned char, unsigned char, msg) */ draw_func) \
 { \
     unsigned short i = 0; \
@@ -28,6 +30,12 @@
     } \
     screen_clear(screen); \
 }
+
+#else
+
+#define debug_hinted(/* SCREEN* */ screen, msg, /* char* */ hint, /* int */ timeout, /* void(SCREEN*, unsigned char, unsigned char, msg) */ draw_func)
+
+#endif
 
 #define debug(screen, msg, draw_func) debug_hinted(screen, msg, "", __DEFAULT_DEBUG_TIMEOUT, draw_func)
 
