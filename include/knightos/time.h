@@ -1,5 +1,5 @@
-#ifndef __CLOCK_H
-#define __CLOCK_H
+#ifndef __TIME_H
+#define __TIME_H
 
 bool clockSupported();
 short getTimeInTicks();
