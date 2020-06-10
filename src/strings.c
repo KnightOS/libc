@@ -172,6 +172,15 @@ int strtoi (unsigned char* str, char** endptr) {
         is_neg = true;
     }
     
+    if (*ptr == '0' ) {
+        base = 8;
+        ptr += 1;
+        if (*ptr == 'x' ) {
+            base = 16;
+            ptr += 1;
+        }
+    }
+    
     while (1) {
         int c = *ptr;
         if (c == '\0' || c < '0' || c > '9') {
