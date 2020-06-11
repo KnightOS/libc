@@ -82,7 +82,7 @@ int strncasecmp(const char *s1, const char *s2, size_t n) {
 }
 
 float strtof (unsigned char* str, char** endptr) {
-    register unsigned char *ptr = str;
+    unsigned char *ptr = str;
     bool is_neg = false;
     bool overflow = false;
     float result = 0;
@@ -155,7 +155,7 @@ float strtof (unsigned char* str, char** endptr) {
 }
 
 int strtoi (unsigned char* str, char** endptr) {
-    register unsigned char *ptr = str;
+    unsigned char *ptr = str;
     bool is_neg = false;
     bool overflow = false;
     int result = 0;
