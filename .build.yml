@@ -1,0 +1,17 @@
+image: archlinux
+packages:
+  - mono 
+  - make
+  - scas
+  - kpack
+  - knightos-kcc
+  - knightos-sdk
+sources:  
+  - https://github.com/KnightOS/libc  
+environment:   
+  project: libc  
+tasks:    
+  - build: |
+      cd ${project}
+      knightos init
+      make 
