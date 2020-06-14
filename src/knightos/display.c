@@ -353,11 +353,7 @@ void draw_float(SCREEN* screen, unsigned char x, unsigned char y, float value){
     integer_part = (unsigned int)value;
     frac_part = ((value - (float)integer_part)*10000);
     
-#define __log10u(x) ((x >= 10000000u) ? 7 : (x >= 1000000u) ? 6 : \
-        (x >= 100000u) ? 5 : (x >= 10000u) ? 4 : \
-        (x >= 1000u) ? 3 : (x >= 100u) ? 2 : (x >= 10u) ? 1u : 0u)
-    
-    integer_part_len = (__log10u(integer_part)) + 1;
+    integer_part_len = (log10u(integer_part)) + 1;
     
     if(sgn){
         draw_char(screen, x, y, '-');
