@@ -1,4 +1,6 @@
 #include <knightos/time.h>
+#include <kernel.h>
+
 
 bool clockSupported() __naked {
     __asm

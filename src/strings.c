@@ -1,5 +1,8 @@
 #include <strings.h>
 #include <ctype.h>
+#include <limits.h>
+#include <stdbool.h>
+#include <math.h>
 
 int ffs(int i) __naked {
 	__asm
