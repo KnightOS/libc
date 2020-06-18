@@ -1,5 +1,7 @@
 # libc
 
+[![builds.sr.ht status](https://builds.sr.ht/~pixelherodev/libc/commits.svg)](https://builds.sr.ht/~pixelherodev/libc/commits?)
+
 This is KnightOS's shared C library. Note that it is not compliant with any
 particular standard and doesn't even slightly resemble POSIX. That being said,
 where POSIX and KnightOS have similar functions, our libc does implement some
