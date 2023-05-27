@@ -97,8 +97,20 @@ void draw_short(SCREEN *screen, unsigned char x, unsigned char y, unsigned short
 **/
 void draw_byte(SCREEN *screen, unsigned char x, unsigned char y, unsigned char value);
 
-/*.*
+/**
+ * Draws a signed short at x, y
+**/
+void draw_signed(SCREEN *screen, unsigned char x, unsigned char y, signed short value);
+
+/**
+ * Draws a float at x,y
+**/
+
+void draw_float(SCREEN* screen, unsigned char x, unsigned char y, float value);
+
+/**
 * Draws a long at x, y
+* NYI
 **/
 void draw_long(SCREEN *screen, unsigned char x, unsigned char y, unsigned long value);
 
